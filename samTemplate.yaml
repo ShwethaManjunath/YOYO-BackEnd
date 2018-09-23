@@ -52,5 +52,5 @@ Resources:
         MyTimeApiGR:
           Type: Api
           Properties:
-            Path: /testDB
+            Path: /createTestDB
             Method: GET
