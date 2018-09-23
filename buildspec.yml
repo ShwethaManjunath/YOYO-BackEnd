@@ -4,7 +4,7 @@ phases:
   install:
     commands:
       - npm install time
-      - aws cloudformation package --template-file samTemplate.yaml --kms-key-id f13044ba-ec9b-433d-ac8a-6f05acf1899a --s3-bucket yoyogiftbucket 
+      - aws cloudformation package --template-file samTemplate.yaml --s3-bucket yoyogiftss 
                                    --output-template-file outputSamTemplate.yaml
 artifacts:
   type: zip
