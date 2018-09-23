@@ -15,3 +15,29 @@ Resources:
           Properties:
             Path: /TimeResource
             Method: GET
+  PutData:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: putData.handler
+      Runtime: nodejs8.10
+      CodeUri: ./
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        MyTimeApiGR:
+          Type: Api
+          Properties:
+            Path: /testDB
+            Method: PUT
+  GetData:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: getData.handler
+      Runtime: nodejs8.10
+      CodeUri: ./
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        MyTimeApiGR:
+          Type: Api
+          Properties:
+            Path: /testDB
+            Method: GET
