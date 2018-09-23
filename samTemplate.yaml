@@ -41,3 +41,16 @@ Resources:
           Properties:
             Path: /testDB
             Method: GET
+  CreateTestDB:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: createTable.handler
+      Runtime: nodejs8.10
+      CodeUri: ./
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        MyTimeApiGR:
+          Type: Api
+          Properties:
+            Path: /testDB
+            Method: GET
