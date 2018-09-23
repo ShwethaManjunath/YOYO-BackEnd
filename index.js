@@ -5,6 +5,6 @@ exports.handler = (event, context, callback) => {
     currentTime.setTimezone("America/Los_Angeles");
     callback(null, {
         statusCode: '200',
-        body: 'The time <<Test:Subhasis>>: ' + currentTime.toString(),
+        body: 'The time <<1.change:Subhasis>>: ' + currentTime.toString(),
     });
 };
