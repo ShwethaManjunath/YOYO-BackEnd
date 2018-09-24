@@ -7,19 +7,11 @@
     "test": "mocha",
     "drop": "node scripts/dropTables.js",
     "create": "node scripts/createTables.js",
-    "seed" : "node scripts/seedDatabase.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gayathri-rajamanickam4/lambda-cd-gr.git"
+    "seed": "node scripts/seedDatabase.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/gayathri-rajamanickam4/lambda-cd-gr/issues"
-  },
-  "homepage": "https://github.com/gayathri-rajamanickam4/lambda-cd-gr#readme",
   "dependencies": {
     "aws-sdk": "^2.320.0"
   },

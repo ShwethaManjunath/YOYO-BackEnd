@@ -1,0 +1,15 @@
+[
+    {
+        "id": 1,
+        "title": "Ecommerce"
+    },
+    {
+        "id": 2,
+        "title": "Food"
+    },
+    
+    {
+        "id": 3,
+        "title": "Electronics"
+    }
+]

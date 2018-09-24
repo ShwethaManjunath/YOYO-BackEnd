@@ -1,11 +1,9 @@
-
 version: 0.2
 phases:
   install:
     commands:
-      - npm install
-      - aws cloudformation package --template-file samTemplate.yaml --s3-bucket yoyogiftss 
-                                   --output-template-file outputSamTemplate.yaml
+      - npm install --production
+      - aws cloudformation package --template-file samTemplate.yaml --s3-bucket codepipeline-cd-gr --output-template-file outputSamTemplate.yaml
 artifacts:
   type: zip
   files:

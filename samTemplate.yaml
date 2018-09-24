@@ -1,56 +1,87 @@
-
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Outputs the time
 Resources:
-  TimeFunction:
+  HelloFunctionGR:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.handler
-      Runtime: nodejs8.10
-      CodeUri: ./
-      Events:
-        MyTimeApi:
-          Type: Api
-          Properties:
-            Path: /TimeResource
-            Method: GET
-  PutData:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: putData.handler
-      Runtime: nodejs8.10
+      Handler: hello.handler
+      Runtime: nodejs6.10
       CodeUri: ./
       Policies: AmazonDynamoDBFullAccess
       Events:
-        MyTimeApiGR:
+        HelloTimeApiGR:
           Type: Api
           Properties:
-            Path: /testDB
+            Path: /HelloResourceGR
+            Method: GET
+  GetCategoriesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/category/getCategories.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoriesApi:
+          Type: Api
+          Properties:
+            Path: /categories
+            Method: GET
+
+  GetCategoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/category/getCategory.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /categories/{id}
+            Method: GET
+
+
+  PostCategoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/category/postCategory.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        PostCategoryApi:
+          Type: Api
+          Properties:
+            Path: /categories
+            Method: POST
+
+  PutCategoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/category/putCategory.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /categories
             Method: PUT
-  GetData:
+
+  DeleteCategoryFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: getData.handler
+      Handler: lambdas/category/deleteCategory.handler
       Runtime: nodejs8.10
-      CodeUri: ./
+      CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
       Events:
-        MyTimeApiGR:
+        GetCategoryApi:
           Type: Api
           Properties:
-            Path: /testDB
-            Method: GET
-  CreateTestDB:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: createTable.handler
-      Runtime: nodejs8.10
-      CodeUri: ./
-      Policies: AmazonDynamoDBFullAccess
-      Events:
-        MyTimeApiGR:
-          Type: Api
-          Properties:
-            Path: /createTestDB
-            Method: GET
+            Path: /categories/{id}
+            Method: DELETE
