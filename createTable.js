@@ -10,7 +10,7 @@ exports.handler = (event, context, callback) => {
             { AttributeName: "id", KeyType: "HASH"},
         ],
         AttributeDefinitions: [       
-            { AttributeName: "id", AttributeType: "N" },
+            { AttributeName: "id", AttributeType: "S" },
             { AttributeName: "description", AttributeType: "S" }
         ],
         ProvisionedThroughput: {       

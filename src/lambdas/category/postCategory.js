@@ -5,7 +5,7 @@ exports.handler = (event, context, callback) => {
      
     const categoryData = JSON.parse(event.body);
     // FIXME: UUID
-    categoryData.id = Math.ceil(Math.random() * 100000000);
+    categoryData.id = Math.ceil(Math.random() * 100000)+"";
 
     CategoryModel.save(categoryData)
     .then ( category => {
