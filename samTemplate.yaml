@@ -75,7 +75,7 @@ Resources:
   DeleteCategoryFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: category/deleteCategory.handler
+      Handler: lambdas/category/deleteCategory.handler
       Runtime: nodejs8.10
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
