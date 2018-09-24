@@ -58,19 +58,19 @@ Resources:
             Path: /categories
             Method: POST
 
-  PutCategoryFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: lambdas/category/putCategory.handler
-      Runtime: nodejs8.10
-      CodeUri: ./src
-      Policies: AmazonDynamoDBFullAccess
-      Events:
-        GetCategoryApi:
-          Type: Api
-          Properties:
-            Path: /categories
-            Method: PUT
+  # PutCategoryFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: lambdas/category/putCategory.handler
+  #     Runtime: nodejs8.10
+  #     CodeUri: ./src
+  #     Policies: AmazonDynamoDBFullAccess
+  #     Events:
+  #       GetCategoryApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /categories
+  #           Method: PUT
 
   DeleteCategoryFunction:
     Type: AWS::Serverless::Function
