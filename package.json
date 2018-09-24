@@ -6,8 +6,8 @@
   "scripts": {
     "test": "mocha",
     "drop": "node scripts/dropTables.js",
-    "create": "node scripts/createTables.js",
-    "seed": "node scripts/seedDatabase.js"
+    "create": "node src/scripts/createTables.js",
+    "seed": "node src/scripts/seedDatabase.js"
   },
   "keywords": [],
   "author": "",

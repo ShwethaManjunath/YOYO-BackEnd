@@ -1,4 +1,4 @@
-const postCategory = require('../src/category/postCategory');
+const postCategory = require('../postCategory');
 
 describe("postCategory test suites", () => {
     it("postCategory", (done) => {
