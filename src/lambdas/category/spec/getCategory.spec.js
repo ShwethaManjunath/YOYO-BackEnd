@@ -1,4 +1,4 @@
-const getCategory = require('../src/category/getCategory');
+const getCategory = require('../getCategory');
  
 // describe("getCategory test suites", () => {
 //     it("getCategory", (done) => {
