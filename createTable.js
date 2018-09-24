@@ -5,7 +5,7 @@ const docClient = new AWS.DynamoDB.DocumentClient({
 
 exports.handler = (event, context, callback) => {            
     var tableDefinition = {
-        TableName : "TestDB",
+        TableName : "TestTable",
         KeySchema: [       
             { AttributeName: "id", KeyType: "HASH"},
         ],
@@ -21,8 +21,10 @@ exports.handler = (event, context, callback) => {
     
     docClient.createTable(tableDefinition, function(err, data) {
         if (err) {
+            console.log('inside err handler');
             callback(err, null)
         } else {
+            console.log('Table created');
             callback(null, data);
         }
     });
