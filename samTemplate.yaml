@@ -80,7 +80,11 @@ Resources:
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
       Events:
+<<<<<<< HEAD
         GetCategoryApi:
+=======
+        table:
+>>>>>>> 0b6de97725b63f4638b0e298b6b7568ec6aff865
           Type: Api
           Properties:
             Path: /categories/{id}
