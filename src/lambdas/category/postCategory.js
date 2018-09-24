@@ -1,4 +1,4 @@
-const CategoryModel = require('../models/CategoryModel');
+const CategoryModel = require('../../models/CategoryModel');
 
 exports.handler = (event, context, callback) => {
     console.log('postCategory handler called')
