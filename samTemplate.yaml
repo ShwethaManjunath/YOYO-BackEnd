@@ -49,7 +49,7 @@ Resources:
       CodeUri: ./
       Policies: AmazonDynamoDBFullAccess
       Events:
-        MyTimeApiGR:
+        table:
           Type: Api
           Properties:
             Path: /createTestDB
