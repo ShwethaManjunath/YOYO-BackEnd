@@ -1,4 +1,4 @@
-const categoryModel = require('../models/CategoryModel');
+const categoryModel = require('../models/productsModel');
 
     Promise.all([
         categoryModel.dropTable()

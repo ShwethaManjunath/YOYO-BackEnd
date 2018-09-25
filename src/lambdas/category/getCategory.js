@@ -3,7 +3,7 @@ const CategoryModel = require('../../models/CategoryModel');
 exports.handler = (event, context, callback) => {
     console.log('getCategory handler called')
     
-    const id = event.pathParameters.id;
+    const id = parseInt(event.pathParameters.id);
 
     CategoryModel.getCategory(id)
          .then (category => {
