@@ -7,8 +7,12 @@ var TABLE = "Products";
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-exports.getProducts = (params) => {
+exports.getProducts = () => {
     return new Promise((resolve, reject) => {
+
+        const params = {
+            TableName: TABLE
+        }
 
         docClient.scan(params, function (err, data) {
             if (err) {
@@ -83,33 +87,33 @@ exports.save = (product) => {
     });
 }
 
-exports.update = (product) => {
-    return new Promise((resolve, reject) => {
+// exports.update = (product) => {
+//     return new Promise((resolve, reject) => {
 
-        const params = {
-            TableName: TABLE,
-            Key: {
-                "id": category.id
-            },
-            UpdateExpression: "set title = :t",
-            ExpressionAttributeValues: {
-                ":t": product.title
-            },
-            ReturnValues: "UPDATED_NEW"
-        };
+//         const params = {
+//             TableName: TABLE,
+//             Key: {
+//                 "id": categoryId
+//             },
+//             UpdateExpression: "set title = :t",
+//             ExpressionAttributeValues: {
+//                 ":t": product.title
+//             },
+//             ReturnValues: "UPDATED_NEW"
+//         };
 
 
-        docClient.update(params, function (err, data) {
-            if (err) {
-                console.error("Unable to update resource", ". Error JSON:", JSON.stringify(err, null, 2));
-                reject(err)
-            } else {
-                console.log("PutItem succeeded:", data);
-                resolve(data)
-            }
-        });
-    });
-}
+//         docClient.update(params, function (err, data) {
+//             if (err) {
+//                 console.error("Unable to update resource", ". Error JSON:", JSON.stringify(err, null, 2));
+//                 reject(err)
+//             } else {
+//                 console.log("PutItem succeeded:", data);
+//                 resolve(data)
+//             }
+//         });
+//     });
+// }
 
 exports.createTable = (params) => {
 
@@ -151,7 +155,7 @@ exports.dropTable = (params) => {
         const dynamodb = new AWS.DynamoDB();
 
         const tableDefinition = {
-            TableName: "Categories"
+            TableName: "Products"
         };
 
         dynamodb.deleteTable(tableDefinition, function (err, data) {
