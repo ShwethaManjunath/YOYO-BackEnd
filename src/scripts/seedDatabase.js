@@ -1,20 +1,29 @@
 const fs = require('fs');
-const CategoryModel = require('../../src/models/CategoryModel');
+const ProductModel = require('../../src/models/productsModel');
 
 console.log("Seeding into DynamoDB. Please wait.");
 
 function seedCategories(fileName) {
     return new Promise((resolve, reject) => {
-        var allCategories = JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        allCategories.forEach(function (category) {
-            var category = {
-                "id": category.id,
-                "title": category.title
+        var allProducts = JSON.parse(fs.readFileSync(fileName, 'utf8'));
+        allProducts.forEach(function (product) {
+            var products = {
+                "id": product.id.toString(),
+                "title": product.title,
+                "retailer_id": product.retailer_id.toString(),
+                "points": product.points,
+                "description": product.description,
+                "categoryId": product.categoryId.toString(),
+                "avgRating": product.avgRating,
+                "thumbnail": product.thumbnail,
+                "image": product.image,
+                "createdAt": product.createdAt,
+                "updatedAt": product.updatedAt
             };
 
-            CategoryModel.save(category, function (err, data) {
+            ProductModel.save(products, function (err, data) {
                 if (err) {
-                    console.error("Unable to add category", ". Error JSON:", JSON.stringify(err, null, 2));
+                    console.error("Unable to add  product", ". Error JSON:", JSON.stringify(err, null, 2));
                 } else {
                     console.log("PutItem succeeded:", data);
                 }
@@ -26,7 +35,7 @@ function seedCategories(fileName) {
 
 
 Promise.all([
-    seedCategories('assets/mock-data/categorydata.json')
+    seedCategories('assets/mock-data/productsData.json')
 ])
     .then(results => {
         console.log("Setup done");

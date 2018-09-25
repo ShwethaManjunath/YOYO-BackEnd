@@ -85,3 +85,31 @@ Resources:
           Properties:
             Path: /categories/{id}
             Method: DELETE
+
+  GetProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/getProducts.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: GET
+
+    GetProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/getProduct.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /products/{id}
+            Method: GET
