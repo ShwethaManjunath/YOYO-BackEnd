@@ -100,7 +100,7 @@ Resources:
             Path: /products
             Method: GET
 
-  GetProductFunction:
+  GetProductByIdFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: lambdas/products/getProduct.handler
