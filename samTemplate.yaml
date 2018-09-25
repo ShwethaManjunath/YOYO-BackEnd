@@ -94,7 +94,7 @@ Resources:
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
       Events:
-        GetCategoryApi:
+        GetAllProductsApi:
           Type: Api
           Properties:
             Path: /products
@@ -108,7 +108,7 @@ Resources:
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
       Events:
-        GetCategoryApi:
+        GetProductByIdApi:
           Type: Api
           Properties:
             Path: /products/{id}
@@ -122,7 +122,7 @@ Resources:
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
       Events:
-        GetCategoryApi:
+        PostTransactionApi:
           Type: Api
           Properties:
             Path: /postTransactions
@@ -136,7 +136,7 @@ Resources:
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
       Events:
-        GetCategoryApi:
+        GetTransactionApi:
           Type: Api
           Properties:
             Path: /transactions
@@ -150,7 +150,7 @@ Resources:
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
       Events:
-        GetCategoryApi:
+        GetTransactionsApi:
           Type: Api
           Properties:
             Path: /transactions/{id}
