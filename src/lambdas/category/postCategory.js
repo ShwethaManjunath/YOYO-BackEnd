@@ -5,7 +5,7 @@ exports.handler = (event, context, callback) => {
      
     const categoryData = JSON.parse(event.body);
     // FIXME: UUID
-    categoryData.id = Math.ceil(Math.random() * 100000000);
+    categoryData.id = Math.ceil(Math.random() * 100000) + "";
 
     CategoryModel.save(categoryData)
     .then ( category => {
@@ -14,7 +14,7 @@ exports.handler = (event, context, callback) => {
             "headers": {
                 "my_header": "my_value"
             },
-            "body": JSON.stringify(categoryData),
+            "body": JSON.stringify(category),
             "isBase64Encoded": false
         };
         callback(null, response);
@@ -28,6 +28,6 @@ exports.handler = (event, context, callback) => {
             "body": JSON.stringify(err),
             "isBase64Encoded": false
         };
-        callback(null, response);
+        callback(response, null);
     })
 };

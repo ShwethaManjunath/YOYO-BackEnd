@@ -4,13 +4,6 @@ exports.handler = (event, context, callback) => {
     console.log('getCategories handler called')
     var params = {
         TableName : "Categories",
-        // KeyConditionExpression: "#yr = :yyyy",
-        // ExpressionAttributeNames:{
-        //     "#yr": "id"
-        // },
-        // ExpressionAttributeValues: {
-        //     ":yyyy": 1
-        // }
     };
 
     CategoryModel.getCategories(params)
