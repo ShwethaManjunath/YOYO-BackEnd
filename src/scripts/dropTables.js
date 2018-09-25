@@ -7,6 +7,6 @@ const categoryModel = require('../models/CategoryModel');
         console.log('drop Tables done', results)
     })
     .catch(error => {
-        console.log('drop Tables failed ', error)
+        console.log('drop Tables failed', error)
     })
 

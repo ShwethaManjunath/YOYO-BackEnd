@@ -19,7 +19,6 @@ exports.getTransactions = (params) => {
                 data.Items.forEach(function (item) {
                     console.log(" -", item);
                 });
-
                 resolve(data.Items);
             }
         });
@@ -43,7 +42,6 @@ exports.getTransaction = (id) => {
                 reject(err)
             } else {
                 console.log("Query succeeded.", data.Item);
-
                 resolve(data.Item);
             }
         });
@@ -93,12 +91,10 @@ exports.createTable = (params) => {
         var tableDefinition = {
             TableName: "Transactions",
             KeySchema: [
-                { AttributeName: "sender_id", KeyType: "HASH" },  //Partition key
-                { AttributeName: "gift_type", KeyType: "RANGE" }  //Sort key
+                { AttributeName: "id", KeyType: "HASH" },
             ],
             AttributeDefinitions: [
-                { AttributeName: "gift_type", AttributeType: "S" },
-                { AttributeName: "sender_id", AttributeType: "S" },
+                { AttributeName: "id", AttributeType: "S" },
             ],
             ProvisionedThroughput: {
                 ReadCapacityUnits: 10,

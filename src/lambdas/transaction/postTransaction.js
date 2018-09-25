@@ -1,7 +1,6 @@
 const TransactionModel = require('../../models/transactionModel');
 
 exports.handler = (event, context, callback) => {
-    console.log('posttransaction handler called')
      
     const transactionData = JSON.parse(event.body);
 
