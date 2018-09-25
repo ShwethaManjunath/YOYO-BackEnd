@@ -99,7 +99,7 @@ Resources:
           Properties:
             Path: /products
             Method: GET
-
+            
     GetProductFunction:
     Type: AWS::Serverless::Function
     Properties:

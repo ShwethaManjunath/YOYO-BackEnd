@@ -2,7 +2,7 @@ const productModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
     
-    const id = event.pathParameters.id;
+    const id = event.pathParameters.id.toString();
 
     productModel.getProduct(id)
          .then (product => {
@@ -11,7 +11,7 @@ exports.handler = (event, context, callback) => {
                 "headers": {
                     "content-type": "application/json"
                 },
-                "body": JSON.stringify(category),
+                "body": JSON.stringify(product),
                 "isBase64Encoded": false
             };
             callback(null, response);
