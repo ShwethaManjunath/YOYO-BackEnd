@@ -1,9 +1,9 @@
 
-const categoryModel = require('../models/CategoryModel');
+const productModel = require('../models/productsModel');
 
     Promise.all([
         // Movie.createTable({})
-        categoryModel.createTable()
+        productModel.createTable()
         ])
         .then ( results => {
             console.log('Create Tables done', results)

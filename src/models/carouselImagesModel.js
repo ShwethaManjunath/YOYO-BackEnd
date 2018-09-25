@@ -5,9 +5,9 @@ AWS.config.update({
  
 });
 
-var TABLE = "Categories";
+var TABLE = "carouselImage";
 
-var docClient = new AWS.DynamoDB.DocumentClient();
+
 
 exports.getCategories = (params) => {
     return new Promise((resolve, reject) => {
@@ -110,58 +110,3 @@ exports.update = (category) => {
 
 // BEWARE. Not to be used with handlers
 // Build Scripts path
-
-exports.createTable = (params) => {
-
-    return new Promise ( (resolve, reject) => {
-
-            const dynamodb = new AWS.DynamoDB();
-            
-            var tableDefinition = {
-                TableName : "Categories",
-                KeySchema: [       
-                    { AttributeName: "id", KeyType: "HASH"},  //Partition key
-                    //{ AttributeName: "name", KeyType: "RANGE" }  //Sort key
-                ],
-                AttributeDefinitions: [       
-                    { AttributeName: "id", AttributeType: "S" },
-                    //{ AttributeName: "name", AttributeType: "S" }
-                ],
-                ProvisionedThroughput: {       
-                    ReadCapacityUnits: 10, 
-                    WriteCapacityUnits: 10
-                }
-            };
-            
-            dynamodb.createTable(tableDefinition, function(err, data) {
-                if (err) {
-                    console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
-                    reject(err);
-                } else {
-                    console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
-                    resolve(data)
-                }
-            });
-    });
-}
-
-exports.dropTable = (params) => {
-    return new Promise( (resolve, reject) => {
-
-            const dynamodb = new AWS.DynamoDB();
-
-            const tableDefinition = {
-                TableName : "Categories"
-            };
-
-            dynamodb.deleteTable(tableDefinition, function(err, data) {
-                if (err) {
-                    console.error("Unable to delete table. Error JSON:", JSON.stringify(err, null, 2));
-                    reject(err);
-                } else {
-                    console.log("Deleted table. Table description JSON:", JSON.stringify(data, null, 2));
-                    resolve(data);
-                }
-            });
-    });
-}

@@ -1,20 +1,20 @@
 const CategoryModel = require('../../models/CategoryModel');
 
 exports.handler = (event, context, callback) => {
-    console.log('postCategory handler called')
-     
+    console.log('putCategory handler called')
+    
     const categoryData = JSON.parse(event.body);
     // FIXME: UUID
-    categoryData.id = Math.ceil(Math.random() * 100000) + "";
+    //categoryData.id = Math.ceil(Math.random() * 100000000);
 
-    CategoryModel.save(categoryData)
+    CategoryModel.update(categoryData)
     .then ( category => {
         var response = {
             "statusCode": 200,
             "headers": {
                 "my_header": "my_value"
             },
-            "body": JSON.stringify(category),
+            "body": JSON.stringify(categoryData),
             "isBase64Encoded": false
         };
         callback(null, response);
@@ -28,6 +28,7 @@ exports.handler = (event, context, callback) => {
             "body": JSON.stringify(err),
             "isBase64Encoded": false
         };
-        callback(response, null);
+        callback(null, response);
     })
+    
 };

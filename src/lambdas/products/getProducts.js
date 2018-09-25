@@ -1,19 +1,19 @@
-const CategoryModel = require('../../models/CategoryModel');
+const productsModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
-    console.log('getCategories handler called')
+    console.log('getProducts handler called')
     var params = {
-        TableName : "Categories",
+        TableName : "Products",
     };
 
-    CategoryModel.getCategories(params)
-         .then (categories => {
+    productsModel.getProducts(params)
+         .then (products => {
             var response = {
                 "statusCode": 200,
                 "headers": {
-                    "my_header": "my_value"
+                    "content-type": "application/json"
                 },
-                "body": JSON.stringify(categories),
+                "body": JSON.stringify(products),
                 "isBase64Encoded": false
             };
             callback(null, response);
@@ -22,7 +22,7 @@ exports.handler = (event, context, callback) => {
             var response = {
                 "statusCode": 500,
                 "headers": {
-                    "my_header": "my_value"
+                    "content-type": "application/json"
                 },
                 "body": JSON.stringify(err),
                 "isBase64Encoded": false
