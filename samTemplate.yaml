@@ -94,7 +94,7 @@ Resources:
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
       Events:
-        GetCategoryApi:
+        GetAllProductsApi:
           Type: Api
           Properties:
             Path: /products
@@ -108,50 +108,50 @@ Resources:
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
       Events:
-        GetCategoryApi:
+        GetProductByIdApi:
           Type: Api
           Properties:
             Path: /products/{id}
             Method: GET
 
-    PostTransactionFunction:
-      Type: AWS::Serverless::Function
-      Properties:
-        Handler: lambdas/transaction/postTransaction.handler
-        Runtime: nodejs8.10
-        CodeUri: ./src
-        Policies: AmazonDynamoDBFullAccess
-        Events:
-          GetCategoryApi:
-            Type: Api
-            Properties:
-              Path: /postTransactions
-              Method: POST
+  PostTransactionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/transaction/postTransaction.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        PostTransactionApi:
+          Type: Api
+          Properties:
+            Path: /postTransactions
+            Method: POST
 
-    GetTransactionsFunction:
-      Type: AWS::Serverless::Function 
-      Properties:
-        Handler: lambdas/transaction/getTransactions.handler
-        Runtime: nodejs8.10
-        CodeUri: ./src
-        Policies: AmazonDynamoDBFullAccess
-        Events:
-          GetCategoryApi:
-            Type: Api
-            Properties:
-              Path: /transactions
-              Method: GET
+  GetTransactionsFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Handler: lambdas/transaction/getTransactions.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetTransactionApi:
+          Type: Api
+          Properties:
+            Path: /transactions
+            Method: GET
     
-    GetTransactionFunction:
-      Type: AWS::Serverless::Function
-      Properties:
-        Handler: lambdas/transaction/getTransaction.handler
-        Runtime: nodejs8.10
-        CodeUri: ./src
-        Policies: AmazonDynamoDBFullAccess
-        Events:
-          GetCategoryApi:
-            Type: Api
-            Properties:
-              Path: /transactions/{id}
-              Method: GET
+  GetTransactionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/transaction/getTransaction.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetTransactionsApi:
+          Type: Api
+          Properties:
+            Path: /transactions/{id}
+            Method: GET
