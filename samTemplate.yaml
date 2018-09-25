@@ -86,7 +86,7 @@ Resources:
             Path: /categories/{id}
             Method: DELETE
 
-  GetProductsFunction:
+  GetAllProductsFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: lambdas/products/getProducts.handler
