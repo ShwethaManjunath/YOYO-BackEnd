@@ -1,14 +1,11 @@
 const productsModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
-    console.log('getProducts handler called')
-    
-    console.log(event.queryStringParameters);
 
     if(event.queryStringParameters !== null) {
         const id = event.queryStringParameters.id;
         const category_id = event.queryStringParameters.categoryId;
-        console.log('inside query params');
+
         productsModel.getProduct(id , category_id)
         .then(product => {
             var response = {
@@ -38,7 +35,6 @@ exports.handler = (event, context, callback) => {
             callback(null, response);
         })
     } else {
-        console.log('inside all products');
         productsModel.getProducts()
         .then(products => {
             var response = {
