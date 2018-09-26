@@ -8,12 +8,12 @@ function seedCategories(fileName) {
         var allProducts = JSON.parse(fs.readFileSync(fileName, 'utf8'));
         allProducts.forEach(function (product) {
             var products = {
-                "id": product.id.toString(),
+                "id": product.id,
                 "title": product.title,
-                "retailer_id": product.retailer_id.toString(),
+                "retailer_id": product.retailer_id,
                 "points": product.points,
                 "description": product.description,
-                "categoryId": product.categoryId.toString(),
+                "categoryId": product.categoryId,
                 "avgRating": product.avgRating,
                 "thumbnail": product.thumbnail,
                 "image": product.image,
