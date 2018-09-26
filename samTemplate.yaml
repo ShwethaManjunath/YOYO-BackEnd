@@ -1,6 +1,31 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Outputs the time
+
+Globals:
+
+  Function:
+    Runtime: nodejs8.10
+
+    Environment:
+      Variables:
+        APP_NAME: GiftApp
+
+  Api:
+    # enable CORS; to make more specific, change the origin wildcard
+    # to a particular domain name, e.g. "'www.example.com'"
+    # Cors:
+    #  AllowMethods: "'*'"
+    #  AllowHeaders: "'*'"
+    #  AllowOrigin: "'*'"
+    #Cors: "'http://localhost:3000'"
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
+
+    EndpointConfiguration: REGIONAL
+
 Resources:
   HelloFunctionGR:
     Type: AWS::Serverless::Function
@@ -196,3 +221,4 @@ Resources:
           Properties:
             Path: /loginUser
             Method: POST
+
