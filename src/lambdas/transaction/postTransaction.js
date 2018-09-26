@@ -3,6 +3,7 @@ const TransactionModel = require('../../models/transactionModel');
 exports.handler = (event, context, callback) => {
      
     const transactionData = JSON.parse(event.body);
+    transactionData.id ='id' + (new Date()).getTime();
 
     TransactionModel.save(transactionData)
     .then ( transaction => {
@@ -22,7 +23,8 @@ exports.handler = (event, context, callback) => {
         var response = {
             "statusCode": 500,
             "headers": {
-                "my_header": "my_value"
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
             },
             "body": JSON.stringify(err),
             "isBase64Encoded": false
