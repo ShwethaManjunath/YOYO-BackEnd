@@ -127,7 +127,6 @@ Resources:
           Properties:
             Path: /postTransactions
             Method: POST
-            Cors: true
 
   GetTransactionsFunction:
     Type: AWS::Serverless::Function 
