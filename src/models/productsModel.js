@@ -32,7 +32,7 @@ exports.getProducts = () => {
 }
 
 
-exports.getProduct = (id) => {
+exports.getProduct = (id,categoryId) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,

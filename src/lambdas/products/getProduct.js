@@ -3,9 +3,8 @@ const productModel = require('../../models/productsModel');
 exports.handler = (event, context, callback) => {
 
     const id = event.pathParameters.id;
-    const category_id = event.pathParameters.categoryId;
 
-    productModel.getProduct(id , category_id)
+    productModel.getProduct(id)
         .then(product => {
             var response = {
                 "statusCode": 200,

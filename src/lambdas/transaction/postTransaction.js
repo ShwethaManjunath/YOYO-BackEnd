@@ -1,10 +1,6 @@
 const TransactionModel = require('../../models/transactionModel');
 
 exports.handler = (event, context, callback) => {
-    event.setHeader('Access-Control-Allow-Origin', '*' );
-    event.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    event.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    event.setHeader('Access-Control-Allow-Credentials', true);
     const transactionData = JSON.parse(event.body);
     transactionData.id ='id' + (new Date()).getTime();
 
