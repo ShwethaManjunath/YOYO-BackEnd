@@ -50,8 +50,8 @@ exports.getTransaction = (id) => {
 }
 
 exports.save = (transaction) => {
+    console.log("post transaction");
     return new Promise((resolve, reject) => {
-
         var params = {
             TableName: TABLE,
             Item: {

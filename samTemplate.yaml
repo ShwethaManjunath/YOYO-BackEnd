@@ -1,14 +1,15 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: MERN-301
+
 Globals:
 
-Function:
-  Runtime: nodejs8.10
+  Function:
+    Runtime: nodejs8.10
 
-  Environment:
-    Variables:
-      APP_NAME: YoYo-Gift Portal
+    Environment:
+      Variables:
+        APP_NAME: YoYo-Gift Portal
 
   Api:
     # enable CORS; to make more specific, change the origin wildcard
@@ -23,7 +24,8 @@ Function:
       AllowHeaders: "'*'"
       AllowOrigin: "'*'"
 
-  EndpointConfiguration: REGIONAL
+    EndpointConfiguration: REGIONAL
+
 Resources:
   HelloFunctionGR:
     Type: AWS::Serverless::Function
@@ -206,4 +208,17 @@ Resources:
           Properties:
             Path: /sortedProducts
             Method: POST
-            
+  UserLoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/users/loginUser.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /loginUser
+            Method: POST
+
