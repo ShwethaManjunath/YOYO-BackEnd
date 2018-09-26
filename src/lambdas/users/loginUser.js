@@ -12,14 +12,14 @@ admin.initializeApp({
 // Login Handler
 exports.handler = (event, context, callback) => {
     
-    const eventBody = JSON.parse(event.body);
+    const eventBody = event.body;
 
     admin.auth().verifyIdToken(eventBody.firebaseIdToken)
     .then(user => {
         // console.log('User>>: ', user)
         userData = {
             email: user.email,
-            name: user.name,
+            userName: user.name,
             photo: user.picture
         }
         userModel.loginUser(userData)
@@ -27,9 +27,9 @@ exports.handler = (event, context, callback) => {
             if(loggedIn) {
                 var response = {
                     "statusCode": 200,
-                    "body": JSON.stringify({
+                    "body": {
                         message: 'Successfully loggedin.'
-                    }),
+                    },
                     "isBase64Encoded": false
                 };
                 callback(null, response);
