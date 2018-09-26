@@ -37,7 +37,8 @@ exports.getProduct = (id) => {
         const params = {
             TableName: TABLE,
             Key: {
-                id
+                id,
+                categoryId
             }
         }
 
