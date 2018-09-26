@@ -86,7 +86,27 @@ exports.save = (product) => {
         });
     });
 }
+exports.getSortedProducts = (details) => {
+  return new Promise((resolve, reject) => {
+    var params = {
+      TableName: TABLE,
+      KeyConditionExpression: "categoryId = :a",
+      ExpressionAttributeValues: {
+        ":a": details.categoryId
+      }
+    };
+    docClient.get(params, function (err, data) {
+      if (err) {
+        console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+        reject(err)
+      } else {
+        console.log("Query succeeded.", data.Item);
 
+        resolve(data.Item);
+      }
+    });
+  })
+}
 // exports.update = (product) => {
 //     return new Promise((resolve, reject) => {
 
