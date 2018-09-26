@@ -47,7 +47,6 @@ exports.getProduct = (id) => {
                 reject(err)
             } else {
                 console.log("Query succeeded.", data.Item);
-
                 resolve(data.Item);
             }
         });
@@ -124,11 +123,11 @@ exports.createTable = (params) => {
         var tableDefinition = {
             TableName: "Products",
             KeySchema: [
-                { AttributeName: "categoryId", KeyType: "HASH" },  //Partition key
-                { AttributeName: "retailer_id", KeyType: "RANGE" }  //Sort key
+                { AttributeName: "id", KeyType: "HASH" },  //Partition key
+                { AttributeName: "categoryId", KeyType: "RANGE" }  //Sort key
             ],
             AttributeDefinitions: [
-                { AttributeName: "retailer_id", AttributeType: "S" },
+                { AttributeName: "id", AttributeType: "S" },
                 { AttributeName: "categoryId", AttributeType: "S" },
             ],
             ProvisionedThroughput: {
