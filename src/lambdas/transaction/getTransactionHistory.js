@@ -8,7 +8,9 @@ exports.handler = (event, context, callback) => {
             var response = {
                 "statusCode": 200,
                 "headers": {
-                    "my_header": "my_value"
+                    "content-type": "application/json",
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
                 },
                 "body": JSON.stringify(transactions),
                 "isBase64Encoded": false
