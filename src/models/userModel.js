@@ -122,12 +122,10 @@ exports.createTable = (params) => {
             var tableDefinition = {
                 TableName : "Users",
                 KeySchema: [       
-                    { AttributeName: "id", KeyType: "HASH"},  //Partition key
-                    //{ AttributeName: "name", KeyType: "RANGE" }  //Sort key
+                    { AttributeName: "email", KeyType: "HASH"},  //Partition key
                 ],
                 AttributeDefinitions: [       
-                    { AttributeName: "id", AttributeType: "S" },
-                    //{ AttributeName: "name", AttributeType: "S" }
+                    { AttributeName: "email", AttributeType: "S" },
                 ],
                 ProvisionedThroughput: {       
                     ReadCapacityUnits: 10, 
@@ -149,26 +147,26 @@ exports.createTable = (params) => {
 
 ////// Done
 
-exports.dropTable = (params) => {
-    return new Promise( (resolve, reject) => {
+// exports.dropTable = (params) => {
+//     return new Promise( (resolve, reject) => {
 
-            const dynamodb = new AWS.DynamoDB();
+//             const dynamodb = new AWS.DynamoDB();
 
-            const tableDefinition = {
-                TableName : "Users"
-            };
+//             const tableDefinition = {
+//                 TableName : "Users"
+//             };
 
-            dynamodb.deleteTable(tableDefinition, function(err, data) {
-                if (err) {
-                    console.error("Unable to delete table. Error JSON:", JSON.stringify(err, null, 2));
-                    reject(err);
-                } else {
-                    console.log("Deleted table. Table description JSON:", JSON.stringify(data, null, 2));
-                    resolve(data);
-                }
-            });
-    });
-}
+//             dynamodb.deleteTable(tableDefinition, function(err, data) {
+//                 if (err) {
+//                     console.error("Unable to delete table. Error JSON:", JSON.stringify(err, null, 2));
+//                     reject(err);
+//                 } else {
+//                     console.log("Deleted table. Table description JSON:", JSON.stringify(data, null, 2));
+//                     resolve(data);
+//                 }
+//             });
+//     });
+// }
 
 
 
@@ -179,24 +177,22 @@ exports.loginUser = (params) => {
 
     return new Promise ( (resolve, reject) => {
 
-            const dynamodb = new AWS.DynamoDB();
-            
             var userData = {
                 TableName : "Users",
-                Item: {
-                    id : new Date().getTime() + '',
-                    ...params
+                Key:{
+                    "email": params.email,
                 },
-                ExpressionAttributeNames : {
-                    '#id' : 'id',
-                    '#email' : 'email',
+                UpdateExpression: "set userName = :userName, photo = :photo",
+                ExpressionAttributeValues:{
+                    ':userName': params.userName,
+                    ':photo': params.photo
                 },
-                ConditionExpression : 'attribute_not_exists(#id) OR attribute_not_exists(#email)',
+                ReturnValues:"UPDATED_NEW"
             };
             
-            console.log('Pram->Item: ',userData.Item);
+            console.log('Pram->Item: ',userData);
 
-            dynamodb.putItem(userData, function(err, data) {
+            docClient.update(userData, function(err, data) {
                 if (err) {
                     console.error("Unable to Login:", JSON.stringify(err, null, 2));
                     reject(err);
