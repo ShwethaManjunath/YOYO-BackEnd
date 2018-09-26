@@ -1,9 +1,9 @@
 const TransactionModel = require('../../models/transactionModel');
 
 exports.handler = (event, context, callback) => {
-    const sender_id = event.pathParameters.sender_id;
+    const id = event.pathParameters.sender_id;
 
-    TransactionModel.getTransactionsBySenderId(sender_id)
+    TransactionModel.getTransactionHistory(id)
          .then (transactions => {
             var response = {
                 "statusCode": 200,
