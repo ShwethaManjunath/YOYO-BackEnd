@@ -155,3 +155,19 @@ Resources:
           Properties:
             Path: /transactions/{id}
             Method: GET
+          
+  GetTransactionBySenderIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/transaction/getTransactionHistory.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetTransactionsApi:
+          Type: Api
+          Properties:
+            Path: /transactionHistory/{id}
+            Method: GET
+
+            
