@@ -11,7 +11,9 @@ admin.initializeApp({
 
 // Login Handler
 exports.handler = (event, context, callback) => {
+
     const eventBody = JSON.parse(event.body);
+    
     admin.auth().verifyIdToken(eventBody.firebaseIdToken)
     .then(user => {
         // console.log('User>>: ', user)
