@@ -170,4 +170,17 @@ Resources:
             Path: /transactionHistory/{id}
             Method: GET
 
+  GetSortedProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/getSortedProducts.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /sortedProducts
+            Method: POST
             
