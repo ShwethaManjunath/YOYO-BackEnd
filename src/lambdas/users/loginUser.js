@@ -17,7 +17,7 @@ exports.handler = (event, context, callback) => {
     admin.auth().verifyIdToken(eventBody.firebaseIdToken)
     .then(user => {
         // console.log('User>>: ', user)
-        userData = {
+        const userData = {
             email: user.email,
             userName: user.name,
             photo: user.picture
