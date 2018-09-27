@@ -3,7 +3,9 @@ const loginUser = require('../src/lambdas/users/loginUser');
 describe("LoginTest test suites", () => {
     it("loginUser", (done) => {
         const body = {
-            firebaseIdToken: ""
+            userName: "Subhasis",
+            email: "subhasis1@gmail.com",
+            photo: "test"
         }
         loginData = {
             body: JSON.stringify(body)   
