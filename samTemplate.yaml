@@ -180,7 +180,7 @@ Resources:
             Path: /transactions/{id}
             Method: GET
           
-  GetTransactionBySenderIdFunction:
+  GetTransactionHistoryFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: lambdas/transaction/getTransactionHistory.handler
