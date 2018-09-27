@@ -1,9 +1,11 @@
 const TransactionModel = require('../../models/transactionModel');
 
 exports.handler = (event, context, callback) => {
-  //const id = parseInt(event.pathParameters.sender_id);
-  const id = event.queryStringParameters.sender_id;
+  const id = parseInt(event.pathParameters.sender_id);
+  //const id = event.queryStringParameters.sender_id;
+ 
 
+  console.log(id);
   TransactionModel.getTransactionHistory(id)
     .then(transactions => {
       var response = {
