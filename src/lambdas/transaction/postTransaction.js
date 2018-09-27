@@ -13,7 +13,7 @@ exports.handler = (event, context, callback) => {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': true,
             },
-            "body": transaction,
+            "body": JSON.stringify(transaction),
             "isBase64Encoded": false
         };
         callback(null, response);
