@@ -1,7 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: MERN-301
-
 Globals:
 
   Function:
@@ -9,7 +8,7 @@ Globals:
 
     Environment:
       Variables:
-        APP_NAME: YoYo-Gift Portal
+        APP_NAME: GiftApp
 
   Api:
     # enable CORS; to make more specific, change the origin wildcard
@@ -181,7 +180,7 @@ Resources:
             Path: /transactions/{id}
             Method: GET
           
-  GetTransactionBySenderIdFunction:
+  GetTransactionHistoryFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: lambdas/transaction/getTransactionHistory.handler
