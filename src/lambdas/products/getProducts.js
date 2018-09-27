@@ -2,7 +2,7 @@ const productsModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
 
-    if(event.queryStringParameters !== undefined) {
+    if(event.queryStringParameters) {
         const id = event.queryStringParameters.id;
         const category_id = event.queryStringParameters.categoryId;
 
