@@ -176,7 +176,8 @@ exports.createTable = (params) => {
 exports.loginUser = (params) => {
 
     return new Promise ( (resolve, reject) => {
-
+            console.log('------------');
+            console.log(params);
             var userData = {
                 TableName : "Users",
                 Key:{
