@@ -189,8 +189,6 @@ exports.loginUser = (params) => {
                 },
                 ReturnValues:"UPDATED_NEW"
             };
-            
-            console.log('Pram->Item: ',userData);
 
             docClient.update(userData, function(err, data) {
                 if (err) {
