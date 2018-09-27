@@ -53,9 +53,8 @@ exports.getTransactionHistory = (id) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            Key: {
-                id
-            }
+            KeyConditionExpression: "sender_id = :a",
+            ExpressionAttributeValues: { ":a": id } 
         }
 
         docClient.get(params, function (err, data) {
