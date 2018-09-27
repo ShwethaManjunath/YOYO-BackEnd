@@ -55,6 +55,28 @@ exports.getProduct = (id,categoryId) => {
     });
 }
 
+exports.getProductByCategory = (categoryId) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE,
+            Key: {
+                categoryId
+            }
+        }
+
+        docClient.get(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
+                resolve(data.Item);
+            }
+        });
+
+    });
+}
+
 exports.save = (product) => {
     return new Promise((resolve, reject) => {
 
