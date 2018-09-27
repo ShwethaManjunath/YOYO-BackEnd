@@ -49,6 +49,31 @@ exports.getTransaction = (id) => {
     });
 }
 
+exports.getTransactionHistory = (id) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE,
+            Key: {
+                id
+            }
+        }
+
+        docClient.getItem(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.");
+                data.Items.forEach(function (item) {
+                    console.log(" -", item);
+                });
+                resolve(data.Items);
+            }
+        });
+
+    });
+}
+
 exports.save = (transaction) => {
     console.log("post transaction");
     return new Promise((resolve, reject) => {
