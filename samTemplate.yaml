@@ -191,7 +191,7 @@ Resources:
         GetTransactionsApi:
           Type: Api
           Properties:
-            Path: /transactionHistory/{id}
+            Path: /transactionHistory
             Method: GET
 
   GetSortedProductsFunction:
@@ -245,5 +245,4 @@ Resources:
         GetProductByIdApi:
           Type: Api
           Properties:
-            Path: /user/{email}
-            Method: GET
+            Path: /user
