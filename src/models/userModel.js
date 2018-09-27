@@ -29,12 +29,12 @@ exports.getUsers = (params) => {
 }
 
 // Done
-exports.getUser = (id) => {
+exports.getUser = (email) => {
     return new Promise((resolve, reject) => {
             const params = {
                 TableName: TABLE,
                 Key: {
-                    id
+                    email
                 }
             }
  

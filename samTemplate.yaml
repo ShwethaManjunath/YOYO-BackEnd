@@ -234,3 +234,16 @@ Resources:
             Path: /products/byCategory
             Method: GET
 
+  GetUserByEmailFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/users/getUser.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetProductByIdApi:
+          Type: Api
+          Properties:
+            Path: /user/{email}
+            Method: GET
