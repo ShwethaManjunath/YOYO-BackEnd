@@ -11,15 +11,15 @@ admin.initializeApp({
 
 // Login Handler
 exports.handler = (event, context, callback) => {
-    
-    const eventBody = JSON.parse(event.body);
 
+    const eventBody = JSON.parse(event.body);
+    
     admin.auth().verifyIdToken(eventBody.firebaseIdToken)
     .then(user => {
         // console.log('User>>: ', user)
-        userData = {
+        const userData = {
             email: user.email,
-            name: user.name,
+            userName: user.name,
             photo: user.picture
         }
         userModel.loginUser(userData)
@@ -27,9 +27,14 @@ exports.handler = (event, context, callback) => {
             if(loggedIn) {
                 var response = {
                     "statusCode": 200,
-                    "body": JSON.stringify({
+                    "headers": {
+                        "content-type": "application/json",
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': true,
+                    },
+                    "body": {
                         message: 'Successfully loggedin.'
-                    }),
+                    },
                     "isBase64Encoded": false
                 };
                 callback(null, response);
@@ -40,6 +45,10 @@ exports.handler = (event, context, callback) => {
         .catch ( err => {
             var response = {
                 "statusCode": 500,
+                "headers": {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
+                },
                 "body": err,
                 "isBase64Encoded": false
             };
@@ -49,6 +58,10 @@ exports.handler = (event, context, callback) => {
     .catch(err => {
         var response = {
             "statusCode": 500,
+            "headers": {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+            },
             "body": JSON.stringify(err),
             "isBase64Encoded": false
         };
