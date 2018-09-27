@@ -9,6 +9,9 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 
 exports.getTransactions = (params) => {
     return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE
+        }
 
         docClient.scan(params, function (err, data) {
             if (err) {
@@ -36,7 +39,7 @@ exports.getTransaction = (id) => {
             }
         }
 
-        docClient.getItem(params, function (err, data) {
+        docClient.get(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
                 reject(err)
@@ -53,9 +56,8 @@ exports.getTransactionHistory = (id) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            Key: {
-                id
-            }
+            KeyConditionExpression: "sender_id = :a",
+            ExpressionAttributeValues: { ":a": id } 
         }
 
         docClient.get(params, function (err, data) {
