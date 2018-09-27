@@ -231,6 +231,6 @@ Resources:
         GetCategoryApi:
           Type: Api
           Properties:
-            Path: /productByCategory/{catId}
-            Method: get
+            Path: /products/byCategory
+            Method: GET
 
