@@ -220,4 +220,17 @@ Resources:
           Properties:
             Path: /loginUser
             Method: POST
+  ProductByCategoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/getProductByCategory.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /loginUser
+            Method: POST
 
