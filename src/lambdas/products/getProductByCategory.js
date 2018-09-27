@@ -1,7 +1,7 @@
 const productsModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
-    const id = event.pathParameters.id;
+    const id = event.queryStringParameters.categoryId;
         productsModel.getProductByCategory(id)
         .then(products => {
             var response = {
