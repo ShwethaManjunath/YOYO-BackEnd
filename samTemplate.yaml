@@ -231,6 +231,6 @@ Resources:
         GetCategoryApi:
           Type: Api
           Properties:
-            Path: /loginUser
-            Method: POST
+            Path: /productByCategory
+            Method: get
 
