@@ -246,3 +246,4 @@ Resources:
           Type: Api
           Properties:
             Path: /user
+            Method: GET
