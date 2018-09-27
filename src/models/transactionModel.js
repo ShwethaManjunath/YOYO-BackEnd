@@ -22,7 +22,7 @@ exports.getTransactions = (params) => {
                 data.Items.forEach(function (item) {
                     console.log(" -", item);
                 });
-                resolve(data.Items);
+                resolve(data.Item);
             }
         });
 
