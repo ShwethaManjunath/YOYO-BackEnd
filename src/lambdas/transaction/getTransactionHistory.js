@@ -14,7 +14,7 @@ exports.handler = (event, context, callback) => {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Credentials': true,
                 },
-                "body": JSON.stringify(transaction),
+                "body": JSON.stringify(transactions),
                 "isBase64Encoded": false
             };
             callback(null, response);
@@ -34,7 +34,7 @@ exports.handler = (event, context, callback) => {
          })
     }
     else{
-        TransactionModel.getTransaction(id)
+        TransactionModel.getTransactionHistory(id)
          .then (transactions=> {
             var response = {
                 "statusCode": 200,

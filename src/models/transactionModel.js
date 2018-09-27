@@ -39,7 +39,7 @@ exports.getTransaction = (id) => {
             }
         }
 
-        docClient.get(params, function (err, data) {
+        docClient.scan(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
                 reject(err)
