@@ -22,7 +22,7 @@ exports.getTransactions = (params) => {
                 data.Items.forEach(function (item) {
                     console.log(" -", item);
                 });
-                resolve(data.Items);
+                resolve(data.Item);
             }
         });
 
@@ -39,7 +39,7 @@ exports.getTransaction = (id) => {
             }
         }
 
-        docClient.get(params, function (err, data) {
+        docClient.scan(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
                 reject(err)
@@ -56,8 +56,9 @@ exports.getTransactionHistory = (id) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            KeyConditionExpression: "sender_id = :a",
-            ExpressionAttributeValues: { ":a": id } 
+            Key: {
+                id
+            }
         }
 
         docClient.get(params, function (err, data) {

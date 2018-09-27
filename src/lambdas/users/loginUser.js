@@ -76,8 +76,8 @@ exports.handler = (event, context, callback) => {
     
     const userData = {
         email: eventBody.email,
-        userName: eventBody.name,
-        photo: eventBody.picture
+        userName: eventBody.userName,
+        photo: eventBody.photo
     }
     userModel.loginUser(userData)
     .then ( (loggedIn) => {
@@ -89,9 +89,9 @@ exports.handler = (event, context, callback) => {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Credentials': true,
                 },
-                "body": {
-                    message: 'Successfully loggedin.'
-                },
+                "body": JSON.stringify({
+                    "message": 'Successfully loggedin.'
+                }),
                 "isBase64Encoded": false
             };
             callback(null, response);
@@ -106,7 +106,7 @@ exports.handler = (event, context, callback) => {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': true,
             },
-            "body": err,
+            "body": JSON.stringify(err),
             "isBase64Encoded": false
         };
         callback(response, null);

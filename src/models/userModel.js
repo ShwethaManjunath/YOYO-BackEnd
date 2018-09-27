@@ -29,12 +29,12 @@ exports.getUsers = (params) => {
 }
 
 // Done
-exports.getUser = (id) => {
+exports.getUser = (email) => {
     return new Promise((resolve, reject) => {
             const params = {
                 TableName: TABLE,
                 Key: {
-                    id
+                    email
                 }
             }
  
@@ -176,7 +176,8 @@ exports.createTable = (params) => {
 exports.loginUser = (params) => {
 
     return new Promise ( (resolve, reject) => {
-
+            console.log('------------');
+            console.log(params);
             var userData = {
                 TableName : "Users",
                 Key:{
