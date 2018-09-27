@@ -92,7 +92,7 @@ exports.getSortedProducts = (details) => {
       TableName: TABLE,
       KeyConditionExpression: "categoryId = :a",
       ExpressionAttributeValues: {
-        ":a": details.categoryId
+        ":a": '1'
       }
     };
     docClient.get(params, function (err, data) {
@@ -101,7 +101,6 @@ exports.getSortedProducts = (details) => {
         reject(err)
       } else {
         console.log("Query succeeded.", data.Item);
-
         resolve(data.Item);
       }
     });
