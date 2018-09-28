@@ -124,19 +124,61 @@ Resources:
             Path: /products
             Method: GET
 
-  GetProductByIdFunction:
+  ProductUpdateFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: lambdas/products/getProduct.handler
+      Handler: lambdas/products/updateProduct.handler
       Runtime: nodejs8.10
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
       Events:
-        GetProductByIdApi:
+        GetCategoryApi:
           Type: Api
           Properties:
-            Path: /products/{id}
-            Method: GET
+            Path: /updateProduct
+            Method: PATCH
+  
+  InsertProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/postProduct.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /product
+            Method: POST
+            
+  RemoveProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/deleteProduct.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /removeproduct
+            Method: DELETE
+
+  # GetProductByIdFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: lambdas/products/getProduct.handler
+  #     Runtime: nodejs8.10
+  #     CodeUri: ./src
+  #     Policies: AmazonDynamoDBFullAccess
+  #     Events:
+  #       GetProductByIdApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /products/{id}
+  #           Method: GET
 
   PostTransactionFunction:
     Type: AWS::Serverless::Function
@@ -262,4 +304,18 @@ Resources:
           Type: Api
           Properties:
             Path: /user
+            Method: GET
+  
+  GetFilteredByPriceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/getFilteredByPrice.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetProductByIdApi:
+          Type: Api
+          Properties:
+            Path: /filteredPrice
             Method: GET
