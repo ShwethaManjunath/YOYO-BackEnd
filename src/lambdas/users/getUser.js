@@ -1,6 +1,9 @@
 const userModel = require('../../models/userModel');
 
 exports.handler = (event, context, callback) => {
+    var params = {
+        TableName : "Users",
+    };
 
     if (event.queryStringParameters) {
         const email = event.queryStringParameters.email;
@@ -34,7 +37,7 @@ exports.handler = (event, context, callback) => {
             })
     }
     else {
-        userModel.getUser(emai)
+        userModel.getUsers(params)
             .then(user => {
                 var response = {
                     "statusCode": 200,
