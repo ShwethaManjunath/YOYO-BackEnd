@@ -10,7 +10,7 @@ exports.handler = (event, context, callback) => {
         updatedAt: new Date().getTime(),
         thumbnail: event.thumbnail,
         retailer_id: event.retailer_id,
-        description: "e-enable intuitive applications",
+        description: event.description,
         id: event.id,
         title: event.title
     }
