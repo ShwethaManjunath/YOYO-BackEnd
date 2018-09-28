@@ -108,6 +108,29 @@ exports.update = (category) => {
 }
 
 
+
+exports.delete = (id) => {
+    return new Promise( (resolve, reject) => {
+ 
+        const params = {
+            TableName:TABLE,
+            Key:{
+                "id": id
+            },
+        };
+
+        docClient.delete(params, function(err, data) {
+            if (err) {
+                console.error("Unable to delete resource", ". Error JSON:", JSON.stringify(err, null, 2));
+                reject(err);
+            } else {
+                console.log("Delete item succeeded:", data);
+                resolve(data);
+            }
+        });
+    });
+}
+
 // BEWARE. Not to be used with handlers
 // Build Scripts path
 

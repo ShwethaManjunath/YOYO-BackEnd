@@ -1,11 +1,9 @@
 const CategoryModel = require('../../models/CategoryModel');
 
 exports.handler = (event, context, callback) => {
-    console.log('getCategory handler called')
-    
     const id = event.pathParameters.id;
 
-    CategoryModel.getCategory(id)
+    CategoryModel.delete(id)
          .then (category => {
             var response = {
                 "statusCode": 200,

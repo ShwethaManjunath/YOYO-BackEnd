@@ -7,6 +7,40 @@ var TABLE = "Products";
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
+exports.createTable = (params) => {
+
+    return new Promise((resolve, reject) => {
+
+        const dynamodb = new AWS.DynamoDB();
+
+        var tableDefinition = {
+            TableName: "Products",
+            KeySchema: [
+                { AttributeName: "categoryId", KeyType: "HASH" },  //Partition key
+                { AttributeName: "id", KeyType: "RANGE" }  //Sort key
+            ],
+            AttributeDefinitions: [
+                { AttributeName: "categoryId", AttributeType: "S" },
+                { AttributeName: "id", AttributeType: "S" },
+            ],
+            ProvisionedThroughput: {
+                ReadCapacityUnits: 10,
+                WriteCapacityUnits: 10
+            }
+        };
+
+        dynamodb.createTable(tableDefinition, function (err, data) {
+            if (err) {
+                console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+                reject(err);
+            } else {
+                console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
+                resolve(data)
+            }
+        });
+    });
+}
+
 exports.getProducts = () => {
     return new Promise((resolve, reject) => {
 
@@ -32,13 +66,13 @@ exports.getProducts = () => {
 }
 
 
-exports.getProduct = (id,categoryId) => {
+exports.getProduct = (id, categoryId) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
             Key: {
-                id,
-                categoryId
+                categoryId,
+                id
             }
         }
 
@@ -59,18 +93,49 @@ exports.getProductByCategory = (categoryId) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            Key: {
-                categoryId
+            KeyConditionExpression: "categoryId = :cId",
+            ExpressionAttributeValues: {
+                ":cId": categoryId
             }
+
         }
 
-        docClient.get(params, function (err, data) {
+        docClient.query(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
                 reject(err)
             } else {
                 console.log("Query succeeded.", data.Item);
-                resolve(data.Item);
+                resolve(data.Items);
+            }
+        });
+
+    });
+}
+
+exports.getProductsByPriceCategory = (categoryId, lowerPrice, upperPrice) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE,
+            FilterExpression: "categoryId = :cId AND #p BETWEEN :t1 AND :t2",
+            ExpressionAttributeNames: {
+                "#p": "points"
+            },
+            ExpressionAttributeValues: {
+                ":cId": categoryId,
+                ":t1": +lowerPrice,
+                ":t2": +upperPrice
+            }
+
+        }
+
+        docClient.scan(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
+                resolve(data.Items);
             }
         });
 
@@ -79,7 +144,6 @@ exports.getProductByCategory = (categoryId) => {
 
 exports.save = (product) => {
     return new Promise((resolve, reject) => {
-
         var params = {
             TableName: TABLE,
             Item: {
@@ -108,87 +172,90 @@ exports.save = (product) => {
         });
     });
 }
-exports.getSortedProducts = (details) => {
-  return new Promise((resolve, reject) => {
-    var params = {
-      TableName: TABLE,
-      KeyConditionExpression: "categoryId = :a",
-      ExpressionAttributeValues: {
-        ":a": '1'
-      }
-    };
-    docClient.get(params, function (err, data) {
-      if (err) {
-        console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-        reject(err)
-      } else {
-        console.log("Query succeeded.", data.Item);
-        resolve(data.Item);
-      }
-    });
-  })
-}
-// exports.update = (product) => {
-//     return new Promise((resolve, reject) => {
-
-//         const params = {
-//             TableName: TABLE,
-//             Key: {
-//                 "id": categoryId
-//             },
-//             UpdateExpression: "set title = :t",
-//             ExpressionAttributeValues: {
-//                 ":t": product.title
-//             },
-//             ReturnValues: "UPDATED_NEW"
-//         };
-
-
-//         docClient.update(params, function (err, data) {
-//             if (err) {
-//                 console.error("Unable to update resource", ". Error JSON:", JSON.stringify(err, null, 2));
-//                 reject(err)
-//             } else {
-//                 console.log("PutItem succeeded:", data);
-//                 resolve(data)
-//             }
-//         });
-//     });
-// }
-
-exports.createTable = (params) => {
-
+exports.filterByPrice = (lowerLimit, upperLimit) => {
     return new Promise((resolve, reject) => {
+        var params = {
+          TableName: TABLE,
+         // KeyConditionExpression: "categoryId= :categoryId AND id> :id" ,
+          FilterExpression: "#p BETWEEN :t1 AND :t2",
+          ExpressionAttributeNames: {
+              "#p": "points"
+          },
+          ExpressionAttributeValues: {
+            ":t1": +lowerLimit, 
+            ":t2": +upperLimit
+          }
+        };
+        docClient.scan(params, function (err, data) {
+          if (err) {
+            console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+            reject(err)
+          } else {
+            console.log("Query succeeded.", data);
+            resolve(data.Items);
+          }
+        });
+    })
+}
 
-        const dynamodb = new AWS.DynamoDB();
-
-        var tableDefinition = {
-            TableName: "Products",
-            KeySchema: [
-                { AttributeName: "id", KeyType: "HASH" },  //Partition key
-                { AttributeName: "categoryId", KeyType: "RANGE" }  //Sort key
-            ],
-            AttributeDefinitions: [
-                { AttributeName: "id", AttributeType: "S" },
-                { AttributeName: "categoryId", AttributeType: "S" },
-            ],
-            ProvisionedThroughput: {
-                ReadCapacityUnits: 10,
-                WriteCapacityUnits: 10
-            }
+exports.update = (product) => {
+    console.log('product',product);
+    return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE,
+            Key: {
+                "categoryId": product.categoryId,
+                "id": product.id
+            },
+            UpdateExpression: "set  title = :title , retailer_id = :retailer_id, points= :points , description = :description , avgRating= :avgRating , thumbnail= :thumbnail , image = :image ",
+            ConditionExpression: "id = :id",
+            ExpressionAttributeValues: {
+                ":id":product.id,
+                ":title": product.title,
+                ":retailer_id": product.retailer_id,
+                ":points": product.points,
+                ":description": product.description,
+                ":avgRating": product.avgRating,
+                ":thumbnail": product.thumbnail,
+                ":image": product.image,
+            },
+            ReturnValues: "UPDATED_NEW"
         };
 
-        dynamodb.createTable(tableDefinition, function (err, data) {
+
+        docClient.update(params, function (err, data) {
             if (err) {
-                console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+                console.error("Unable to update resource", ". Error JSON:", JSON.stringify(err, null, 2));
                 reject(err);
             } else {
-                console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
-                resolve(data)
+                console.log("PutItem succeeded:", data);
+                resolve(data);
             }
         });
     });
 }
+
+exports.deleteItem = (categoryId, id) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE,
+            Key: {
+                "categoryId": categoryId,
+                "id": id
+            }
+        };
+        docClient.delete(params, function (err, data) {
+            if (err) {
+                console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+                reject(err);
+            } else {
+                console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                resolve();
+            }
+        });
+    });
+}
+
 
 exports.dropTable = (params) => {
     return new Promise((resolve, reject) => {
@@ -211,6 +278,28 @@ exports.dropTable = (params) => {
     });
 }
 
+exports.getSortedProducts = (details) => {
+    return new Promise((resolve, reject) => {
+        var params = {
+            TableName: TABLE,
+            KeyConditionExpression: "categoryId = :a",
+            ExpressionAttributeValues: {
+                ":a": details.categoryId
+            }
+        };
+        docClient.get(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
+
+                resolve(data.Item);
+            }
+        });
+    })
+}
+
 filterProducts = query => {
     return new Promise((resolve, reject) => {
         
@@ -231,3 +320,4 @@ filterProducts = query => {
         });
     });
 }
+
