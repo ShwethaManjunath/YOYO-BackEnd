@@ -3,6 +3,8 @@ const productsModel = require('../../models/productsModel');
 exports.handler = (event, context, callback) => {
     const lowerLimit = event.queryStringParameters.lowerLimit;
     const upperLimit = event.queryStringParameters.upperLimit;
+    console.log("ll", lowerLimit);
+    console.log("ul", upperLimit);
         productsModel.filterByPrice(lowerLimit, upperLimit)
         .then(products => {
             var response = {

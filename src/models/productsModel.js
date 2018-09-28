@@ -147,19 +147,23 @@ exports.filterByPrice = (lowerLimit, upperLimit) => {
     return new Promise((resolve, reject) => {
         var params = {
           TableName: TABLE,
-          KeyConditionExpression: "points = BETWEEN :t1 AND :t2",
+         // KeyConditionExpression: "categoryId= :categoryId AND id> :id" ,
+          FilterExpression: "#p BETWEEN :t1 AND :t2",
+          ExpressionAttributeNames: {
+              "#p": "points"
+          },
           ExpressionAttributeValues: {
-            ":t1": {"S": lowerLimit}, 
-            ":t2": {"S": upperLimit}
+            ":t1": +lowerLimit, 
+            ":t2": +upperLimit
           }
         };
-        docClient.query(params, function (err, data) {
+        docClient.scan(params, function (err, data) {
           if (err) {
             console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
             reject(err)
           } else {
-            console.log("Query succeeded.", data.Item);
-            resolve(data.Item);
+            console.log("Query succeeded.", data);
+            resolve(data.Items);
           }
         });
       })
