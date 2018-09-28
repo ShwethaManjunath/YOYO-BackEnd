@@ -59,18 +59,20 @@ exports.getProductByCategory = (categoryId) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            Key: {
-                categoryId
+            KeyConditionExpression: "categoryId = :cId",
+            ExpressionAttributeValues: {
+                ":cId": categoryId
             }
+
         }
 
-        docClient.get(params, function (err, data) {
+        docClient.query(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
                 reject(err)
             } else {
                 console.log("Query succeeded.", data.Item);
-                resolve(data.Item);
+                resolve(data.Items);
             }
         });
 

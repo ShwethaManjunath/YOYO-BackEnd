@@ -191,7 +191,7 @@ Resources:
         GetTransactionsApi:
           Type: Api
           Properties:
-            Path: /transactionHistory/{id}
+            Path: /transactionHistory
             Method: GET
 
   GetSortedProductsFunction:
@@ -247,6 +247,19 @@ Resources:
         GetCategoryApi:
           Type: Api
           Properties:
-            Path: /products/byCategory/{catId}
+            Path: /products/byCategory
             Method: GET
 
+  GetUserByEmailFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/users/getUser.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetProductByIdApi:
+          Type: Api
+          Properties:
+            Path: /user
+            Method: GET
