@@ -1,9 +1,9 @@
 const productsModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
-    const id = event.queryStringParameters.categoryId;
-    const lowerLimit = "";
-        productsModel.sortByPrice(lowerLimit, upperLimit)
+    const lowerLimit = event.queryStringParameters.lowerLimit;
+    const upperLimit = event.queryStringParameters.upperLimit;
+        productsModel.filterByPrice(lowerLimit, upperLimit)
         .then(products => {
             var response = {
                 "statusCode": 200,

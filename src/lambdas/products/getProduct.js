@@ -12,7 +12,6 @@ exports.handler = (event, context, callback) => {
                     "content-type": "application/json",
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Credentials': true,
-
                 },
                 "body": JSON.stringify(product),
                 "isBase64Encoded": false

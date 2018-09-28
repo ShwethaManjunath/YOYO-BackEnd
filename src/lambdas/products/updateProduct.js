@@ -1,20 +1,19 @@
-const CategoryModel = require('../../models/CategoryModel');
+const productModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
-    console.log('postCategory handler called')
-     
-    const categoryData = JSON.parse(event.body);
-    // FIXME: UUID
-    categoryData.id = Math.ceil(Math.random() * 100000000);
+    
+    const product = JSON.parse(event.body);
 
-    CategoryModel.save(categoryData)
-    .then ( category => {
+    productModel.update(product)
+    .then ( product => {
         var response = {
             "statusCode": 200,
             "headers": {
-                "my_header": "my_value"
+                "content-type": "application/json",
+                'Access-Control-Allow-Origin': '*',
             },
-            "body": JSON.stringify(categoryData),
+            "message":"Product updated",
+            "body": JSON.stringify(product),
             "isBase64Encoded": false
         };
         callback(null, response);
@@ -30,4 +29,5 @@ exports.handler = (event, context, callback) => {
         };
         callback(null, response);
     })
+    
 };
