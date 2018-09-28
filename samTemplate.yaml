@@ -166,19 +166,19 @@ Resources:
             Path: /transactions
             Method: GET
     
-  GetTransactionFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: lambdas/transaction/getTransaction.handler
-      Runtime: nodejs8.10
-      CodeUri: ./src
-      Policies: AmazonDynamoDBFullAccess
-      Events:
-        GetTransactionsApi:
-          Type: Api
-          Properties:
-            Path: /transactions/{id}
-            Method: GET
+  # GetTransactionFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: lambdas/transaction/getTransaction.handler
+  #     Runtime: nodejs8.10
+  #     CodeUri: ./src
+  #     Policies: AmazonDynamoDBFullAccess
+  #     Events:
+  #       GetTransactionsApi:
+  #         Type: Api
+  #         Properties:
+  #           Path: /transactions/{id}
+  #           Method: GET
           
   GetTransactionHistoryFunction:
     Type: AWS::Serverless::Function
@@ -191,7 +191,7 @@ Resources:
         GetTransactionsApi:
           Type: Api
           Properties:
-            Path: /transactionHistory/{id}
+            Path: /transactionHistory
             Method: GET
 
   GetSortedProductsFunction:
@@ -207,6 +207,7 @@ Resources:
           Properties:
             Path: /sortedProducts
             Method: POST
+
   UserLoginFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -220,4 +221,45 @@ Resources:
           Properties:
             Path: /loginUser
             Method: POST
+  
+  UserUpdateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/users/updateUser.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /updateUser
+            Method: PATCH
 
+  ProductByCategoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/getProductByCategory.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /products/byCategory
+            Method: GET
+
+  GetUserByEmailFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/users/getUser.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetProductByIdApi:
+          Type: Api
+          Properties:
+            Path: /user
+            Method: GET

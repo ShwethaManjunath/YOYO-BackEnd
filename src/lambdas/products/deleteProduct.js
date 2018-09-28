@@ -3,7 +3,7 @@ const productModel = require('../../models/productsModel');
 exports.handler = (event, context, callback) => {
     const id = event.pathParameters.id;
 
-    productModel.getCategory(id)
+    productModel.deleteItem(id)
          .then (category => {
             var response = {
                 "statusCode": 200,

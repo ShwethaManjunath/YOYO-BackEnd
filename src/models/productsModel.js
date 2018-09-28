@@ -89,6 +89,30 @@ exports.getProduct = (id, categoryId) => {
     });
 }
 
+exports.getProductByCategory = (categoryId) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE,
+            KeyConditionExpression: "categoryId = :cId",
+            ExpressionAttributeValues: {
+                ":cId": categoryId
+            }
+
+        }
+
+        docClient.query(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
+                resolve(data.Items);
+            }
+        });
+
+    });
+}
+
 exports.save = (product) => {
     return new Promise((resolve, reject) => {
 
@@ -121,17 +145,26 @@ exports.save = (product) => {
     });
 }
 
+
 exports.update = (product) => {
     return new Promise((resolve, reject) => {
 
         const params = {
             TableName: TABLE,
             Key: {
-                "id": categoryId
+                "categoryId": product.categoryId,
+                "id":product.id
             },
-            UpdateExpression: "set title = :t",
+            UpdateExpression: "set title = :title , retailer_id = :retailer_id, points= :points , description = :description , categoryId = :categoryId , avgRating= :avgRating , thumbnail= :thumbnail , image = :image" ,
             ExpressionAttributeValues: {
-                ":t": product.title
+                "title": product.title,
+                "retailer_id": product.retailer_id,
+                "points": product.points,
+                "description": product.description,
+                "categoryId": product.categoryId,
+                "avgRating": product.avgRating,
+                "thumbnail": product.thumbnail,
+                "image": product.image,
             },
             ReturnValues: "UPDATED_NEW"
         };
