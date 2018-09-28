@@ -2,7 +2,18 @@ const productModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
     
-    const product = JSON.parse(event.body);
+    const product = {
+        avgRating: event.avgRating,
+        image: event.image,
+        categoryId: 1,
+        points: event.points,
+        updatedAt: new Date().getTime(),
+        thumbnail: event.thumbnail,
+        retailer_id: event.retailer_id,
+        description: "e-enable intuitive applications",
+        id: event.id,
+        title: event.title
+    }
 
     productModel.update(product)
     .then ( product => {
