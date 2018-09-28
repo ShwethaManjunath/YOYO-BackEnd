@@ -113,6 +113,36 @@ exports.getProductByCategory = (categoryId) => {
     });
 }
 
+exports.getCategoryProductByPrice = (paramData) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE,
+            KeySchema: [
+                { AttributeName: "categoryId", KeyType: "HASH" },  //Partition key
+                { AttributeName: "id", KeyType: "RANGE" }  //Sort key
+            ],
+            KeyConditionExpression: "categoryId = :cId AND lowerPrice <= :lprice AND upperPrice = :uprice",
+            ExpressionAttributeValues: {
+                ":cId": paramData.categoryId,
+                ":lprice": paramData.lowerPrice,
+                ":uprice": paramData.upperPrice
+            }
+
+        }
+
+        docClient.query(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
+                resolve(data.Items);
+            }
+        });
+
+    });
+}
+
 exports.save = (product) => {
     return new Promise((resolve, reject) => {
         var params = {
@@ -174,23 +204,12 @@ exports.update = (product) => {
                 "categoryId": product.categoryId,
                 "id":product.id
             },
-            UpdateExpression: "set title = :title , retailer_id = :retailer_id, points= :points , description = :description , categoryId = :categoryId , avgRating= :avgRating , thumbnail= :thumbnail , image = :image",
-            ExpressionAttributeValues: {
-                "title": "title",
-                "retailer_id": "retailer_id",
-                "points":"points",
-                "description": "description",
-                "categoryId": "categoryId",
-                "avgRating": "avgRating",
-                "thumbnail": "thumbnail",
-                "image":"image",
-              },
+            UpdateExpression: "set title = :title , retailer_id = :retailer_id, points= :points , description = :description , avgRating= :avgRating , thumbnail= :thumbnail , image = :image",
             ExpressionAttributeValues: {
                 "title": product.title,
                 "retailer_id": product.retailer_id,
                 "points": product.points,
                 "description": product.description,
-                "categoryId": product.categoryId,
                 "avgRating": product.avgRating,
                 "thumbnail": product.thumbnail,
                 "image": product.image,

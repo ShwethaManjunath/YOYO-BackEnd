@@ -3,16 +3,15 @@ const productModel = require('../../models/productsModel');
 exports.handler = (event, context, callback) => {
     
     const product = {
-        avgRating: event.avgRating,
-        image: event.image,
-        categoryId: 1,
-        points: event.points,
-        updatedAt: new Date().getTime(),
-        thumbnail: event.thumbnail,
-        retailer_id: event.retailer_id,
-        description: "e-enable intuitive applications",
-        id: event.id,
-        title: event.title
+        avgRating: event.body.avgRating,
+        image: event.body.image,
+        points: event.body.points,
+        thumbnail: event.body.thumbnail,
+        retailer_id: event.body.retailer_id,
+        description: event.body.description,
+        id: event.body.id,
+        title: event.body.title,
+        categoryId: event.body.categoryId
     }
 
     productModel.update(product)

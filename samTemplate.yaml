@@ -291,6 +291,20 @@ Resources:
           Properties:
             Path: /products/byCategory
             Method: GET
+  
+  CategoryProductByPriceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/getCategoryProductByPrice.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /products/byPriceCategory
+            Method: GET
 
   GetUserByEmailFunction:
     Type: AWS::Serverless::Function
