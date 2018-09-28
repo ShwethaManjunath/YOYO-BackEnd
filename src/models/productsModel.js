@@ -206,16 +206,6 @@ exports.update = (product) => {
             },
             UpdateExpression: "set title = :title , retailer_id = :retailer_id, points= :points , description = :description , categoryId = :categoryId , avgRating= :avgRating , thumbnail= :thumbnail , image = :image",
             ExpressionAttributeValues: {
-                "title": "title",
-                "retailer_id": "retailer_id",
-                "points":"points",
-                "description": "description",
-                "categoryId": "categoryId",
-                "avgRating": "avgRating",
-                "thumbnail": "thumbnail",
-                "image":"image",
-              },
-            ExpressionAttributeValues: {
                 "title": product.title,
                 "retailer_id": product.retailer_id,
                 "points": product.points,
