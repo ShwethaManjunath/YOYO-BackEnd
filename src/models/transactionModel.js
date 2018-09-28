@@ -11,7 +11,7 @@ exports.getTransactions = (params) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE
-        }
+            }
 
         docClient.scan(params, function (err, data) {
             if (err) {
@@ -22,7 +22,7 @@ exports.getTransactions = (params) => {
                 data.Items.forEach(function (item) {
                     console.log(" -", item);
                 });
-                resolve(data.Item);
+                resolve(data.Items);
             }
         });
 
@@ -39,7 +39,7 @@ exports.getTransaction = (id) => {
             }
         }
 
-        docClient.scan(params, function (err, data) {
+        docClient.get(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
                 reject(err)
