@@ -2,27 +2,24 @@ const productsModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
     var prods = [];
-  //  console.log(JSON.parse(event.queryStringParameters.category_ids).ids);
-    // const ids = JSON.parse(event.queryStringParameters.category_ids).ids;
+ 
     const ids = Object.values(event.queryStringParameters);
     
     if(ids.length > 1){
         let c = 0;
         new Promise((resolve, reject) => {
             for(let i=0;i<ids.length;i++){
-                console.log("check",ids[i]);
-                productsModel.getProductByCategory(ids[i])
+                console.log("check", ids[i]);
+                productsModel.getCategoryProductByPrice(ids[i])
                 .then(products => {
-                    console.log(products)
+                    console.log(products);
                     prods.push(...products); 
                     c++;
-                    // console.log(i,prods);
                     if(c === ids.length)
                         resolve();
                 })
                 .catch(err=>{
                     console.log(err);
-                    
                 })
             }
         })
@@ -41,7 +38,7 @@ exports.handler = (event, context, callback) => {
         })
         
     }else{
-        productsModel.getProductByCategory(ids[0])
+        productsModel.getCategoryProductByPrice(ids[0])
         .then(products => {
             var response = {
                 "statusCode": 200,

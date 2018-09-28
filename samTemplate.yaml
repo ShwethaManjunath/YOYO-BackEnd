@@ -155,7 +155,7 @@ Resources:
   RemoveProductFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: lambdas/products/updateProduct.handler
+      Handler: lambdas/products/deleteProduct.handler
       Runtime: nodejs8.10
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
@@ -291,6 +291,20 @@ Resources:
           Properties:
             Path: /products/byCategory
             Method: GET
+  
+  CategoryProductByPriceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/getCategoryProductByPrice.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /products/byPriceCategory
+            Method: POST
 
   GetUserByEmailFunction:
     Type: AWS::Serverless::Function

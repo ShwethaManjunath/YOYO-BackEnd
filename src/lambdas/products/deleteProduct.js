@@ -5,13 +5,10 @@ exports.handler = (event, context, callback) => {
     const category_id = event.queryStringParameters.categoryId;
 
     productModel.deleteItem(id, category_id)
-        .then(category => {
+        .then(product => {
             var response = {
                 "statusCode": 200,
-                "headers": {
-                    "my_header": "my_value"
-                },
-                "body": JSON.stringify(category),
+                "body": JSON.stringify(product),
                 "isBase64Encoded": false
             };
             callback(null, response);
@@ -19,9 +16,7 @@ exports.handler = (event, context, callback) => {
         .catch(err => {
             var response = {
                 "statusCode": 500,
-                "headers": {
-                    "my_header": "my_value"
-                },
+                "message": 'Delete unsuccessful',
                 "body": JSON.stringify(err),
                 "isBase64Encoded": false
             };
