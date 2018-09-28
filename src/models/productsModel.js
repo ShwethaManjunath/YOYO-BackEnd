@@ -300,7 +300,7 @@ exports.getSortedProducts = (details) => {
     })
 }
 
-filterProducts = query => {
+exports.filterProducts = query => {
     return new Promise((resolve, reject) => {
         
         const dynamodb = new AWS.DynamoDB();
@@ -308,16 +308,16 @@ filterProducts = query => {
         const params = {
             TableName: TABLE
         }
+        
 
-        docClient.scan(parmas, function (err, data) {
+        docClient.scan(params, function (err, data) {
             if (err) {
                 console.error("Error occured:", JSON.stringify(err, null, 2));
                 reject(err);
             } else {
                 console.log("Scanned Data:", JSON.stringify(data, null, 2));
-                resolve(data);
+                resolve(data.Items);
             }
         });
     });
 }
-
