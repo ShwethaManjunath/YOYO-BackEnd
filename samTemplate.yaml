@@ -155,7 +155,7 @@ Resources:
   RemoveProductFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: lambdas/products/updateProduct.handler
+      Handler: lambdas/products/deleteProduct.handler
       Runtime: nodejs8.10
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
