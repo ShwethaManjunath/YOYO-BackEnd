@@ -8,7 +8,6 @@ exports.handler = (event, context, callback) => {
         .then(product => {
             var response = {
                 "statusCode": 200,
-                "message":"Delete successful",
                 "body": JSON.stringify(product),
                 "isBase64Encoded": false
             };

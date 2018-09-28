@@ -196,23 +196,25 @@ exports.filterByPrice = (lowerLimit, upperLimit) => {
 }
 
 exports.update = (product) => {
+    console.log('product',product);
     return new Promise((resolve, reject) => {
-
         const params = {
             TableName: TABLE,
             Key: {
                 "categoryId": product.categoryId,
                 "id":product.id
             },
-            UpdateExpression: "set title = :title , retailer_id = :retailer_id, points= :points , description = :description , avgRating= :avgRating , thumbnail= :thumbnail , image = :image",
+            UpdateExpression: "set  title = :title , retailer_id = :retailer_id, points= :points , description = :description , avgRating= :avgRating , thumbnail= :thumbnail , image = :image ",
+            ConditionExpression: "id = :id",
             ExpressionAttributeValues: {
-                "title": product.title,
-                "retailer_id": product.retailer_id,
-                "points": product.points,
-                "description": product.description,
-                "avgRating": product.avgRating,
-                "thumbnail": product.thumbnail,
-                "image": product.image,
+                ":id":product.id,
+                ":title": product.title,
+                ":retailer_id": product.retailer_id,
+                ":points": product.points,
+                ":description": product.description,
+                ":avgRating": product.avgRating,
+                ":thumbnail": product.thumbnail,
+                ":image": product.image,
             },
             ReturnValues: "UPDATED_NEW"
         };
@@ -221,10 +223,10 @@ exports.update = (product) => {
         docClient.update(params, function (err, data) {
             if (err) {
                 console.error("Unable to update resource", ". Error JSON:", JSON.stringify(err, null, 2));
-                reject(err)
+                reject(err);
             } else {
                 console.log("PutItem succeeded:", data);
-                resolve(data)
+                resolve(data);
             }
         });
     });

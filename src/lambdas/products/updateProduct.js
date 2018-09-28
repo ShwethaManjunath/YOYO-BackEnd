@@ -1,20 +1,20 @@
 const productModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
-    
-    const product = {
-        avgRating: event.body.avgRating,
-        image: event.body.image,
-        points: event.body.points,
-        thumbnail: event.body.thumbnail,
-        retailer_id: event.body.retailer_id,
-        description: event.body.description,
-        id: event.body.id,
-        title: event.body.title,
-        categoryId: event.body.categoryId
+    const parser = JSON.parse(event.body)
+    const productDetails = {
+        avgRating: parser.avgRating,
+        image: parser.image,
+        points: parser.points,
+        thumbnail: parser.thumbnail,
+        retailer_id: parser.retailer_id,
+        description: parser.description,
+        id: parser.id,
+        title: parser.title,
+        categoryId: parser.categoryId
     }
 
-    productModel.update(product)
+    productModel.update(productDetails)
     .then ( product => {
         var response = {
             "statusCode": 200,
@@ -22,7 +22,6 @@ exports.handler = (event, context, callback) => {
                 "content-type": "application/json",
                 'Access-Control-Allow-Origin': '*',
             },
-            "message":"Product updated",
             "body": JSON.stringify(product),
             "isBase64Encoded": false
         };
