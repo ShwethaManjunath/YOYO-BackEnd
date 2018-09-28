@@ -2,7 +2,7 @@ const productsModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
     const id = event.queryStringParameters.categoryId;
-    const lowerLimit = 
+    const lowerLimit = "";
         productsModel.sortByPrice(lowerLimit, upperLimit)
         .then(products => {
             var response = {
