@@ -180,7 +180,6 @@ exports.update = (product) => {
                 "retailer_id": product.retailer_id,
                 "points": product.points,
                 "description": product.description,
-                "categoryId": product.categoryId,
                 "avgRating": product.avgRating,
                 "thumbnail": product.thumbnail,
                 "image": product.image,
