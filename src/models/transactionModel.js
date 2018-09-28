@@ -60,9 +60,9 @@ exports.getTransactionHistory = (sender_id) => {
             //     id
             // }
             TableName: TABLE,
-            FilterExpression: "sender_id = :tId",
+            KeyConditionExpression: "sender_id = :tId",
             ExpressionAttributeValues: {
-                ":tId": sender_id
+                ":tId": {"S":sender_id}
             }
 
         }
