@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 
 AWS.config.update({
-  region: "us-east-1",
+    region: "us-east-1",
 });
 
 var TABLE = "Users";
@@ -12,18 +12,18 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 exports.getUsers = (params) => {
     return new Promise((resolve, reject) => {
 
-            docClient.scan(params, function(err, data) {
-                if (err) {
-                    console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-                    reject(err)
-                } else {
-                    console.log("Query succeeded.");
-                    data.Items.forEach(function(item) {
-                        console.log(" -", item.year + ": " + item.title);
-                    });
-                    resolve(data.Items); 
-                }
-            });
+        docClient.scan(params, function(err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.");
+                data.Items.forEach(function(item) {
+                    console.log(" -", item.year + ": " + item.title);
+                });
+                resolve(data.Items);
+            }
+        });
 
     });
 }
@@ -31,22 +31,22 @@ exports.getUsers = (params) => {
 // Done
 exports.getUser = (email) => {
     return new Promise((resolve, reject) => {
-            const params = {
-                TableName: TABLE,
-                Key: {
-                    email
-                }
+        const params = {
+            TableName: TABLE,
+            Key: {
+                email
             }
- 
-            docClient.get(params, function(err, data) {
-                if (err) {
-                    console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-                    reject(err)
-                } else {
-                    console.log("Query succeeded.", data.Item);
-                    resolve(data.Item); 
-                }
-            });
+        }
+
+        docClient.get(params, function(err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
+                resolve(data.Item);
+            }
+        });
 
     });
 }
@@ -54,7 +54,7 @@ exports.getUser = (email) => {
 // Left change to upsert
 // exports.save = (category) => {
 //     return new Promise( (resolve, reject) => {
-       
+
 //         var params = {
 //             TableName: TABLE,
 //             Item: {
@@ -80,7 +80,7 @@ exports.getUser = (email) => {
 
 // exports.update = (category) => {
 //     return new Promise( (resolve, reject) => {
- 
+
 //         const params = {
 //             TableName:TABLE,
 //             Key:{
@@ -115,33 +115,33 @@ exports.getUser = (email) => {
 // Done
 exports.createTable = (params) => {
 
-    return new Promise ( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-            const dynamodb = new AWS.DynamoDB();
-            
-            var tableDefinition = {
-                TableName : "Users",
-                KeySchema: [       
-                    { AttributeName: "email", KeyType: "HASH"},  //Partition key
-                ],
-                AttributeDefinitions: [       
-                    { AttributeName: "email", AttributeType: "S" },
-                ],
-                ProvisionedThroughput: {       
-                    ReadCapacityUnits: 10, 
-                    WriteCapacityUnits: 10
-                }
-            };
-            
-            dynamodb.createTable(tableDefinition, function(err, data) {
-                if (err) {
-                    console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
-                    reject(err);
-                } else {
-                    console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
-                    resolve(data)
-                }
-            });
+        const dynamodb = new AWS.DynamoDB();
+
+        var tableDefinition = {
+            TableName: "Users",
+            KeySchema: [
+                { AttributeName: "email", KeyType: "HASH" },  //Partition key
+            ],
+            AttributeDefinitions: [
+                { AttributeName: "email", AttributeType: "S" },
+            ],
+            ProvisionedThroughput: {
+                ReadCapacityUnits: 10,
+                WriteCapacityUnits: 10
+            }
+        };
+
+        dynamodb.createTable(tableDefinition, function(err, data) {
+            if (err) {
+                console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+                reject(err);
+            } else {
+                console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
+                resolve(data)
+            }
+        });
     });
 }
 
@@ -175,35 +175,64 @@ exports.createTable = (params) => {
 // Done
 exports.loginUser = (params) => {
 
-    return new Promise ( (resolve, reject) => {
-            console.log('------------');
-            console.log(params);
-            var userData = {
-                TableName : "Users",
-                Key:{
-                    "email": params.email,
-                },
-                UpdateExpression: "set userName = :userName, photo = :photo",
-                ExpressionAttributeValues:{
-                    ':userName': params.userName,
-                    ':photo': params.photo
-                },
-                ReturnValues:"UPDATED_NEW"
-            };
+    return new Promise((resolve, reject) => {
+        console.log('------------');
+        console.log(params);
+        var userData = {
+            TableName: "Users",
+            Key: {
+                "email": params.email,
+            },
+            UpdateExpression: "set userName = :userName, photo = :photo",
+            ExpressionAttributeValues: {
+                ':userName': params.userName,
+                ':photo': params.photo
+            },
+            ReturnValues: "UPDATED_NEW"
+        };
 
-            docClient.update(userData, function(err, data) {
-                if (err) {
-                    console.error("Unable to Login:", JSON.stringify(err, null, 2));
-                    reject(err);
-                } else {
-                    console.log("Loggedin successfully:", JSON.stringify(data, null, 2));
-                    resolve(true)
-                }
-            });
+        docClient.update(userData, function(err, data) {
+            if (err) {
+                console.error("Unable to Login:", JSON.stringify(err, null, 2));
+                reject(err);
+            } else {
+                console.log("Loggedin successfully:", JSON.stringify(data, null, 2));
+                resolve(true)
+            }
+        });
     });
 }
 
 // Update User
 exports.updateUser = (params) => {
-    
+
+    return new Promise((resolve, reject) => {
+
+        var userData = {
+            TableName: 'Users',
+            Key: {
+                email: params.email
+            },
+            UpdateExpression: "set userName = :userName, photo = :photo",
+            ConditionExpression: "email = :email",
+            ExpressionAttributeValues: {
+                ':userName': params.userName,
+                ':photo': params.photo,
+                ":email": params.email,
+                ":points": params.points
+            },
+            ReturnValues: "UPDATED_NEW"
+        };
+
+        docClient.update(userData, function(err, data) {
+            if (err) {
+                console.error("User already exits:", JSON.stringify(err, null, 2));
+                reject(err);
+            } else {
+                console.log("User data updated:", JSON.stringify(data, null, 2));
+                resolve(true)
+            }
+        });
+
+    });
 }
