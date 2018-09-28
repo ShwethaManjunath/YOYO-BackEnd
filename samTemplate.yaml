@@ -305,3 +305,17 @@ Resources:
           Properties:
             Path: /user
             Method: GET
+  
+  GetFilteredByPriceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/getFilteredByPrice.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetProductByIdApi:
+          Type: Api
+          Properties:
+            Path: /filteredPrice
+            Method: GET
