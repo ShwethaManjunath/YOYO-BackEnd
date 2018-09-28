@@ -113,6 +113,36 @@ exports.getProductByCategory = (categoryId) => {
     });
 }
 
+exports.getCategoryProductByPrice = (paramData) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE,
+            KeySchema: [
+                { AttributeName: "categoryId", KeyType: "HASH" },  //Partition key
+                { AttributeName: "id", KeyType: "RANGE" }  //Sort key
+            ],
+            KeyConditionExpression: "categoryId = :cId AND lowerPrice <= :lprice AND upperPrice = :uprice",
+            ExpressionAttributeValues: {
+                ":cId": paramData.categoryId,
+                ":lprice": paramData.lowerPrice,
+                ":uprice": paramData.upperPrice
+            }
+
+        }
+
+        docClient.query(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
+                resolve(data.Items);
+            }
+        });
+
+    });
+}
+
 exports.save = (product) => {
     return new Promise((resolve, reject) => {
         var params = {

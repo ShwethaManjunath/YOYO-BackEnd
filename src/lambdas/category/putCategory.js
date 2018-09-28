@@ -1,9 +1,11 @@
 const CategoryModel = require('../../models/CategoryModel');
 
 exports.handler = (event, context, callback) => {
-    console.log('putCategory handler called')
-
-    const categoryData = JSON.parse(event.body);
+    console.log('putCategory handler called');
+    
+    const categoryData = event;
+    // FIXME: UUID
+    //categoryData.id = Math.ceil(Math.random() * 100000000);
 
     CategoryModel.update(categoryData)
         .then(category => {
