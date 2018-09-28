@@ -309,7 +309,7 @@ Resources:
   GetFilteredByPriceFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: lambdas/users/getFilteredByPrice.handler
+      Handler: lambdas/products/getFilteredByPrice.handler
       Runtime: nodejs8.10
       CodeUri: ./src
       Policies: AmazonDynamoDBFullAccess
