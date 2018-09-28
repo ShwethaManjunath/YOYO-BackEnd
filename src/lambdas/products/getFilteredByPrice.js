@@ -1,18 +1,17 @@
-const productModel = require('../../models/productsModel');
+const productsModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
-
-    const id = event.pathParameters.id;
-
-    productModel.getProduct(id)
-        .then(product => {
+    const lowerLimit = event.queryStringParameters.lowerLimit;
+    const upperLimit = event.queryStringParameters.upperLimit;
+        productsModel.filterByPrice(lowerLimit, upperLimit)
+        .then(products => {
             var response = {
                 "statusCode": 200,
                 "headers": {
-                    "content-type": "application/json",
                     'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true,
                 },
-                "body": JSON.stringify(product),
+                "body": JSON.stringify(products),
                 "isBase64Encoded": false
             };
             callback(null, response);
@@ -21,7 +20,6 @@ exports.handler = (event, context, callback) => {
             var response = {
                 "statusCode": 500,
                 "headers": {
-                    "content-type": "application/json",
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Credentials': true,
                 },
@@ -29,5 +27,5 @@ exports.handler = (event, context, callback) => {
                 "isBase64Encoded": false
             };
             callback(null, response);
-        })
-};
+        });
+    }

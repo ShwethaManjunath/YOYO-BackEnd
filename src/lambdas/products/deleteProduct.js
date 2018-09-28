@@ -1,17 +1,14 @@
 const productModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
+    const id = event.queryStringParameters.id;
+    const category_id = event.queryStringParameters.categoryId;
 
-    const id = event.pathParameters.id;
-
-    productModel.getProduct(id)
+    productModel.deleteItem(id, category_id)
         .then(product => {
             var response = {
                 "statusCode": 200,
-                "headers": {
-                    "content-type": "application/json",
-                    'Access-Control-Allow-Origin': '*',
-                },
+                "message":"Delete successful",
                 "body": JSON.stringify(product),
                 "isBase64Encoded": false
             };
@@ -20,11 +17,7 @@ exports.handler = (event, context, callback) => {
         .catch(err => {
             var response = {
                 "statusCode": 500,
-                "headers": {
-                    "content-type": "application/json",
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials': true,
-                },
+                "message": 'Delete unsuccessful',
                 "body": JSON.stringify(err),
                 "isBase64Encoded": false
             };
