@@ -113,19 +113,15 @@ exports.getProductByCategory = (categoryId) => {
     });
 }
 
-exports.getCategoryProductByPrice = (paramData) => {
+exports.getProductsByPriceCategory = (categoryId, lowerPrice, upperPrice) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            KeySchema: [
-                { AttributeName: "categoryId", KeyType: "HASH" },  //Partition key
-                { AttributeName: "id", KeyType: "RANGE" }  //Sort key
-            ],
-            KeyConditionExpression: "categoryId = :cId AND lowerPrice <= :lprice AND upperPrice = :uprice",
+            KeyConditionExpression: "categoryId = :cId AND points: BETWEEN :t1 AND :t2",
             ExpressionAttributeValues: {
-                ":cId": paramData.categoryId,
-                ":lprice": paramData.lowerPrice,
-                ":uprice": paramData.upperPrice
+                ":cId": categoryId,
+                ":t1": +lowerPrice,
+                ":t2": +upperPrice
             }
 
         }
@@ -176,23 +172,23 @@ exports.save = (product) => {
 exports.filterByPrice = (lowerLimit, upperLimit) => {
     return new Promise((resolve, reject) => {
         var params = {
-          TableName: TABLE,
-          KeyConditionExpression: "points = BETWEEN :t1 AND :t2",
-          ExpressionAttributeValues: {
-            ":t1": {"S": lowerLimit}, 
-            ":t2": {"S": upperLimit}
-          }
+            TableName: TABLE,
+            KeyConditionExpression: "points = BETWEEN :t1 AND :t2",
+            ExpressionAttributeValues: {
+                ":t1": { "S": lowerLimit },
+                ":t2": { "S": upperLimit }
+            }
         };
         docClient.query(params, function (err, data) {
-          if (err) {
-            console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-            reject(err)
-          } else {
-            console.log("Query succeeded.", data.Item);
-            resolve(data.Item);
-          }
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
+                resolve(data.Item);
+            }
         });
-      })
+    })
 }
 
 exports.update = (product) => {
@@ -202,7 +198,7 @@ exports.update = (product) => {
             TableName: TABLE,
             Key: {
                 "categoryId": product.categoryId,
-                "id":product.id
+                "id": product.id
             },
             UpdateExpression: "set title = :title , retailer_id = :retailer_id, points= :points , description = :description , avgRating= :avgRating , thumbnail= :thumbnail , image = :image",
             ExpressionAttributeValues: {
