@@ -117,7 +117,7 @@ exports.getProductsByPriceCategory = (categoryId, lowerPrice, upperPrice) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            KeyConditionExpression: "categoryId = :cId AND #p BETWEEN :t1 AND :t2",
+            FilterExpression: "categoryId = :cId AND #p BETWEEN :t1 AND :t2",
             ExpressionAttributeNames: {
                 "#p": "points"
             },
