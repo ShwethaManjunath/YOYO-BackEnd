@@ -113,7 +113,7 @@ exports.getProductByCategory = (categoryId) => {
     });
 }
 
-exports.getCategoryProductByPrice = (params) => {
+exports.getCategoryProductByPrice = (paramData) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
@@ -123,9 +123,9 @@ exports.getCategoryProductByPrice = (params) => {
             ],
             KeyConditionExpression: "categoryId = :cId AND lowerPrice <= :lprice AND upperPrice = :uprice",
             ExpressionAttributeValues: {
-                ":cId": params.categoryId,
-                ":lprice": params.lowerPrice,
-                ":uprice": params.upperPrice
+                ":cId": paramData.categoryId,
+                ":lprice": paramData.lowerPrice,
+                ":uprice": paramData.upperPrice
             }
 
         }
