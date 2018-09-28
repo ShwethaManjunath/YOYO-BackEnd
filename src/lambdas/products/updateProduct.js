@@ -7,7 +7,6 @@ exports.handler = (event, context, callback) => {
         image: event.image,
         categoryId: 1,
         points: event.points,
-        updatedAt: new Date().getTime(),
         thumbnail: event.thumbnail,
         retailer_id: event.retailer_id,
         description: event.description,
