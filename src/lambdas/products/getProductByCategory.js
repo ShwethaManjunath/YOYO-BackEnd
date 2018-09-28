@@ -3,18 +3,21 @@ const productsModel = require('../../models/productsModel');
 exports.handler = (event, context, callback) => {
     var prods = [];
   //  console.log(JSON.parse(event.queryStringParameters.category_ids).ids);
-    const ids = JSON.parse(event.queryStringParameters.category_ids).ids;
+    // const ids = JSON.parse(event.queryStringParameters.category_ids).ids;
+    const ids = Object.values(event.queryStringParameters);
     
     if(ids.length > 1){
+        let c = 0;
         new Promise((resolve, reject) => {
             for(let i=0;i<ids.length;i++){
                 console.log("check",ids[i]);
                 productsModel.getProductByCategory(ids[i])
                 .then(products => {
                     console.log(products)
-                     prods.push(...products); 
-                     console.log(i,prods);
-                     if(i + 1 === ids.length)
+                    prods.push(...products); 
+                    c++;
+                    // console.log(i,prods);
+                    if(c === ids.length)
                         resolve();
                 })
                 .catch(err=>{
