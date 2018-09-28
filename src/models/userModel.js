@@ -213,7 +213,7 @@ exports.updateUser = (params) => {
             Key: {
                 email: params.email
             },
-            UpdateExpression: "set userName = :userName, photo = :photo",
+            UpdateExpression: "set userName = :userName, photo = :photo, points = :points",
             ConditionExpression: "email = :email",
             ExpressionAttributeValues: {
                 ':userName': params.userName,

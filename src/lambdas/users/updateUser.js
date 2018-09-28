@@ -1,19 +1,17 @@
 const userModel = require('../../models/userModel');
 
 exports.handler = (event, context, callback) => {
-
-    const eventBody = JSON.parse(event.body);
-
+    
     const userData = {
-        email: eventBody.email,
-        userName: eventBody.userName,
-        photo: eventBody.photo,
-        points: eventBody.points
+        email: event.email,
+        userName: event.userName,
+        photo: event.photo,
+        points: event.points
     }
 
     userModel.updateUser(userData)
-        .then((loggedIn) => {
-            if (loggedIn) {
+        .then((user) => {
+            if (user) {
                 var response = {
                     "statusCode": 200,
                     "headers": {
@@ -28,7 +26,7 @@ exports.handler = (event, context, callback) => {
                 };
                 callback(null, response);
             } else {
-                throw new Error('Failed to login');
+                throw new Error('User already exists');
             }
         })
         .catch(err => {
@@ -39,8 +37,8 @@ exports.handler = (event, context, callback) => {
                     'Access-Control-Allow-Credentials': true,
                 },
                 "body": JSON.stringify({
-                    "message": "Error Occured",
-                    "details": err
+                    "error": err,
+                    "message": "User already exists"
                 }),
                 "isBase64Encoded": false
             };
