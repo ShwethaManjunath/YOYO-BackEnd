@@ -201,3 +201,8 @@ exports.loginUser = (params) => {
             });
     });
 }
+
+// Update User
+exports.updateUser = (params) => {
+    
+}

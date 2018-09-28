@@ -207,6 +207,7 @@ Resources:
           Properties:
             Path: /sortedProducts
             Method: POST
+
   UserLoginFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -220,6 +221,21 @@ Resources:
           Properties:
             Path: /loginUser
             Method: POST
+  
+  UserUpdateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/users/updateUser.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /updateUser
+            Method: PATCH
+
   ProductByCategoryFunction:
     Type: AWS::Serverless::Function
     Properties:
