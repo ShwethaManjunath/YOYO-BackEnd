@@ -52,7 +52,7 @@ exports.getTransaction = (id) => {
     });
 }
 
-exports.getTransactionHistory = (id) => {
+exports.getTransactionHistory = (sender_id) => {
     return new Promise((resolve, reject) => {
         const params = {
             // TableName: TABLE,
@@ -60,9 +60,9 @@ exports.getTransactionHistory = (id) => {
             //     id
             // }
             TableName: TABLE,
-            KeyConditionExpression: "id = :tId",
+            KeyConditionExpression: "sender_id = :tId",
             ExpressionAttributeValues: {
-                ":tId": id
+                ":tId": sender_id
             }
 
         }
