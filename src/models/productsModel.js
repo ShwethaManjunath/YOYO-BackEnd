@@ -210,3 +210,24 @@ exports.dropTable = (params) => {
         });
     });
 }
+
+filterProducts = query => {
+    return new Promise((resolve, reject) => {
+        
+        const dynamodb = new AWS.DynamoDB();
+
+        const params = {
+            TableName: TABLE
+        }
+
+        docClient.scan(parmas, function (err, data) {
+            if (err) {
+                console.error("Error occured:", JSON.stringify(err, null, 2));
+                reject(err);
+            } else {
+                console.log("Scanned Data:", JSON.stringify(data, null, 2));
+                resolve(data);
+            }
+        });
+    });
+}

@@ -233,4 +233,16 @@ Resources:
           Properties:
             Path: /products/byCategory
             Method: GET
-
+  FilterProducts:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/filterProduct.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCategoryApi:
+          Type: Api
+          Properties:
+            Path: /products/filter
+            Method: GET
