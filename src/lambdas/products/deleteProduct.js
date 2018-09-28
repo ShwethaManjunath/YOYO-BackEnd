@@ -1,10 +1,11 @@
 const productModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
-    const id = event.pathParameters.id;
+    const id = event.queryStringParameters.id;
+    const category_id = event.queryStringParameters.categoryId;
 
-    productModel.deleteItem(id)
-         .then (category => {
+    productModel.deleteItem(id, category_id)
+        .then(category => {
             var response = {
                 "statusCode": 200,
                 "headers": {
@@ -14,8 +15,8 @@ exports.handler = (event, context, callback) => {
                 "isBase64Encoded": false
             };
             callback(null, response);
-         })
-         .catch(err => {
+        })
+        .catch(err => {
             var response = {
                 "statusCode": 500,
                 "headers": {
@@ -25,5 +26,5 @@ exports.handler = (event, context, callback) => {
                 "isBase64Encoded": false
             };
             callback(null, response);
-         })
+        })
 };
