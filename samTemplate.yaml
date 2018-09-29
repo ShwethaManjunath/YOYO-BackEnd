@@ -39,7 +39,7 @@ Resources:
           Properties:
             Path: /HelloResourceGR
             Method: GET
-            
+
   GetCategoriesFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -361,4 +361,4 @@ Resources:
           Type: Api
           Properties:
             Path: /comments
-            Method: POST
+            Method: GET
