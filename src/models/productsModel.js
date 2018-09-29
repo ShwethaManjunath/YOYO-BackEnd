@@ -336,8 +336,8 @@ exports.filterProducts = (categories, minPrce, maxPrice) => {
             },
             ExpressionAttributeValues: {
                 ...exAtValuesCategories,
-                ":t1": minPrce, 
-                ":t2": maxPrice
+                ":t1": +minPrce, 
+                ":t2": +maxPrice
             }
         }
         
