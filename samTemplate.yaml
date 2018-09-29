@@ -165,6 +165,19 @@ Resources:
           Properties:
             Path: /removeproduct
             Method: DELETE
+   GetRecommendedProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/recommendedProducts.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetAllProductsApi:
+          Type: Api
+          Properties:
+            Path: /recommendedproducts
+            Method: GET
 
   # GetProductByIdFunction:
   #   Type: AWS::Serverless::Function
