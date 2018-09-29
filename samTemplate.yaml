@@ -376,6 +376,20 @@ Resources:
             Path: /comments
             Method: POST
 
+  GetReceivedGiftsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/transaction/getReceivedGifts.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetTransactionsApi:
+          Type: Api
+          Properties:
+            Path: /receivedGifts
+            Method: GET
+
   HelloFunctionGR:
       Type: AWS::Serverless::Function
       Properties:

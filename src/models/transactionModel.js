@@ -75,6 +75,29 @@ exports.getTransactionHistory = (sender_email) => {
 
     });
 }
+exports.getReceivedGifts = (receiver_email) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+
+            TableName: TABLE,
+            FilterExpression: "receiver_email = :rEmail",
+            ExpressionAttributeValues: {
+                ":rEmail": receiver_email
+            }
+        }
+
+        docClient.scan(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
+                resolve(data.Items);
+            }
+        });
+
+    });
+}
 
 exports.save = (transaction) => {
     console.log("post transaction");
