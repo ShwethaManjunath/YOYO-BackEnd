@@ -26,7 +26,6 @@ Globals:
     EndpointConfiguration: REGIONAL
 
 Resources:
-<<<<<<< HEAD
   # HelloFunctionGR:
   #   Type: AWS::Serverless::Function
   #   Properties:
@@ -40,22 +39,6 @@ Resources:
   #         Properties:
   #           Path: /HelloResourceGR
   #           Method: GET
-=======
-  HelloFunctionGR:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: hello.handler
-      Runtime: nodejs6.10
-      CodeUri: ./
-      Policies: AmazonDynamoDBFullAccess
-      Events:
-        HelloTimeApiGR:
-          Type: Api
-          Properties:
-            Path: /HelloResourceGR
-            Method: GET
-            
->>>>>>> 412dcc45b9a6dbae20565bdce7d9f14ea46245b2
   GetCategoriesFunction:
     Type: AWS::Serverless::Function
     Properties:
