@@ -362,6 +362,20 @@ Resources:
             Path: /comments
             Method: GET
 
+  PostCommentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/comment/postComments.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetProductByIdApi:
+          Type: Api
+          Properties:
+            Path: /comments
+            Method: POST
+
   HelloFunctionGR:
       Type: AWS::Serverless::Function
       Properties:

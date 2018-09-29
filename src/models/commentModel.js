@@ -12,7 +12,7 @@ exports.fetchComments = (productId) => {
     return new Promise((resolve, reject) => {
 
         const params = {
-            Table: TABLE,
+            TableName: TABLE,
             Key: {
                 productId
             }
@@ -25,6 +25,36 @@ exports.fetchComments = (productId) => {
             } else {
                 console.log("Query succeeded.");
                 resolve(data.Items);
+            }
+        });
+
+    });
+}
+
+// post new comments
+exports.postComment = (comment) => {
+    return new Promise((resolve, reject) => {
+
+        const params = {
+            TableName: TABLE,
+            Key: {
+                productId
+            },
+            Comment: {
+                commentText: comment.commentText,
+                userId: comment.userId,
+                productId: comment.productId,
+                rating: comment.rating
+            }
+        }
+
+        docClient.put(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.");
+                resolve(data);
             }
         });
 
