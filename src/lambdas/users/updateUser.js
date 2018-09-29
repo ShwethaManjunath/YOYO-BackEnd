@@ -2,11 +2,13 @@ const userModel = require('../../models/userModel');
 
 exports.handler = (event, context, callback) => {
     
+    const eventBody = JSON.parse(event.body);
+
     const userData = {
-        email: event.email,
-        userName: event.userName,
-        photo: event.photo,
-        points: event.points
+        email: eventBody.email,
+        userName: eventBody.userName,
+        photo: eventBody.photo,
+        points: eventBody.points
     }
 
     userModel.updateUser(userData)

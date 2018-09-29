@@ -26,6 +26,7 @@ Globals:
     EndpointConfiguration: REGIONAL
 
 Resources:
+<<<<<<< HEAD
   # HelloFunctionGR:
   #   Type: AWS::Serverless::Function
   #   Properties:
@@ -39,6 +40,22 @@ Resources:
   #         Properties:
   #           Path: /HelloResourceGR
   #           Method: GET
+=======
+  HelloFunctionGR:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: hello.handler
+      Runtime: nodejs6.10
+      CodeUri: ./
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        HelloTimeApiGR:
+          Type: Api
+          Properties:
+            Path: /HelloResourceGR
+            Method: GET
+            
+>>>>>>> 412dcc45b9a6dbae20565bdce7d9f14ea46245b2
   GetCategoriesFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -346,13 +363,23 @@ Resources:
           Type: Api
           Properties:
             Path: /products/filter
-            Method: GET
+            Method: GET      
 
+  FetchCommentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/comment/fetchComments.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetProductByIdApi:
+          Type: Api
+          Properties:
+            Path: /comments
+            Method: POST
 
-
-
-            # 
-  
+  # 
   HelloFunctionGR:
         Type: AWS::Serverless::Function
         Properties:
@@ -453,6 +480,5 @@ Resources:
     Properties:
       Description: Staging deployment for Gift APP API
       RestApiId: !Ref YoYoGiftApi
-      StageName: stag         
-
-
+      StageName: stag
+  # 
