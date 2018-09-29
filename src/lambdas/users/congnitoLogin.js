@@ -62,11 +62,6 @@ exports.handler =  (event, context, callback) => {
             };
             callback(response, null);
         })
-        const response = {
-                    statusCode: 200,
-                    body: JSON.stringify(data)
-                };
-        callback(null, response)
     }
     });
 };
