@@ -20,9 +20,8 @@ exports.handler =  (event, context, callback) => {
     }
     else {
         console.log(data);           // successful response
-        const userData = {};
         const mappedData = {};
-        data.forEach(item => {
+        data.UserAttributes.forEach(item => {
             const values = Object.values(item);
             mappedData[values[0]] = values[1]
         })
@@ -31,6 +30,8 @@ exports.handler =  (event, context, callback) => {
             userName: mappedData.name,
             photo: mappedData.picture || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrSKKu7oCCmPKDSTU6aSsZMfnUxrVImzv42-DDnAgVBmG54Szz"
         }
+        
+        console.log('userData: ', userData);
 
         userModel.loginUser(userData)
         .then ( (loggedIn) => {
