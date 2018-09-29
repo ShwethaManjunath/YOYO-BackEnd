@@ -2,13 +2,14 @@ const commentModel = require('../../models/commentModel');
 
 exports.handler = (event, context, callback) => {
 
-    var eventBody = JSON.parse(eventBody);
+    var eventBody = JSON.parse(event.body);
 
     const commentData = {
         commentText: eventBody.commentText,
         userId: eventBody.userId,
         productId: eventBody.productId,
-        rating: eventBody.rating
+        rating: eventBody.rating,
+        commentId:'id' + (new Date()).getTime()
     }
 
     commentModel.postComment(commentData)
