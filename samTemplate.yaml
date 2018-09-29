@@ -166,7 +166,7 @@ Resources:
             Path: /removeproduct
             Method: DELETE
 
-   GetRecommendedProductsFunction:
+  GetRecommendedProductsFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: lambdas/products/recommendedProducts.handler
