@@ -8,13 +8,18 @@ var TABLE = "Comment";
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 // fetches comments for a particular product 
-exports.fetchComments = (productId) => {
+exports.fetchComments = (productId, commentId) => {
+
     return new Promise((resolve, reject) => {
 
         const params = {
             TableName: TABLE,
             Key: {
-                productId
+                commentId
+            },
+            FilterExpression: "productId = :productId",
+            ExpressionAttributeValues: {
+                ":productId": productId
             }
         };
 
@@ -23,7 +28,7 @@ exports.fetchComments = (productId) => {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
                 reject(err)
             } else {
-                console.log("Query succeeded.");
+                console.log("Query succeeded.", data.Item);
                 resolve(data.Items);
             }
         });
@@ -38,13 +43,14 @@ exports.postComment = (comment) => {
         const params = {
             TableName: TABLE,
             Key: {
-                productId
+                commentId: comment.commentId
             },
-            Comment: {
+            Item: {
                 commentText: comment.commentText,
                 userId: comment.userId,
                 productId: comment.productId,
-                rating: comment.rating
+                rating: comment.rating,
+                commentId: comment.commentId
             }
         }
 
@@ -54,7 +60,7 @@ exports.postComment = (comment) => {
                 reject(err)
             } else {
                 console.log("Query succeeded.");
-                resolve(data);
+                resolve(data.Item);
             }
         });
 
