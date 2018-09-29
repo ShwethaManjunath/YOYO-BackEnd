@@ -502,3 +502,17 @@ Resources:
       Description: Staging deployment for Gift APP API
       RestApiId: !Ref YoYoGiftApi
       StageName: stag
+
+  GetCacheFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/cache/getCache.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCacheApi:
+          Type: Api
+          Properties:
+            Path: /cache
+            Method: GET
