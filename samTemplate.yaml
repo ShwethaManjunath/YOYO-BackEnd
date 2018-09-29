@@ -39,6 +39,7 @@ Resources:
           Properties:
             Path: /HelloResourceGR
             Method: GET
+            
   GetCategoriesFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -347,3 +348,17 @@ Resources:
           Properties:
             Path: /products/filter
             Method: GET
+
+  FetchCommentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/comment/fetchComments.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetProductByIdApi:
+          Type: Api
+          Properties:
+            Path: /comments
+            Method: POST
