@@ -14,7 +14,11 @@ exports.fetchComments = (productId) => {
         const params = {
             TableName: TABLE,
             Key: {
-                productId
+                commentId
+            },
+            KeyConditionExpression: "productId = :productId",
+            ExpressionAttributeValues: {
+                ":productId": productId
             }
         };
 
