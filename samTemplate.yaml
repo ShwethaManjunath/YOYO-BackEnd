@@ -39,21 +39,6 @@ Resources:
   #         Properties:
   #           Path: /HelloResourceGR
   #           Method: GET
-
-  HelloFunctionGR:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: hello.handler
-      Runtime: nodejs6.10
-      CodeUri: ./
-      Policies: AmazonDynamoDBFullAccess
-      Events:
-        HelloTimeApiGR:
-          Type: Api
-          Properties:
-            Path: /HelloResourceGR
-            Method: GET
-
   GetCategoriesFunction:
     Type: AWS::Serverless::Function
     Properties:
