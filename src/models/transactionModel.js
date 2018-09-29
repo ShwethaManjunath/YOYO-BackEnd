@@ -11,7 +11,7 @@ exports.getTransactions = (params) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE
-            }
+        }
 
         docClient.scan(params, function (err, data) {
             if (err) {
@@ -52,30 +52,46 @@ exports.getTransaction = (id) => {
     });
 }
 
-exports.getTransactionHistory = (sender_id) => {
+exports.getTransactionHistory = (sender_email) => {
     return new Promise((resolve, reject) => {
         const params = {
-            // TableName: TABLE,
-            // Key: {
-            //     id
-            // }
-            TableName: TABLE,
-            KeyConditionExpression: "sender_id = :tId",
-            ExpressionAttributeValues: {
-                ":tId": {"S":sender_id}
-            }
 
+            TableName: TABLE,
+            FilterExpression: "sender_email = :sEmail",
+            ExpressionAttributeValues: {
+                ":sEmail": sender_email
+            }
         }
 
-        docClient.query(params, function (err, data) {
+        docClient.scan(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
                 reject(err)
             } else {
-                console.log("Query succeeded.");
-                data.Items.forEach(function (item) {
-                    console.log(" -", item);
-                });
+                console.log("Query succeeded.", data.Item);
+                resolve(data.Items);
+            }
+        });
+
+    });
+}
+exports.getReceivedGifts = (receiver_email) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+
+            TableName: TABLE,
+            FilterExpression: "receiver_email = :rEmail",
+            ExpressionAttributeValues: {
+                ":rEmail": receiver_email
+            }
+        }
+
+        docClient.scan(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
                 resolve(data.Items);
             }
         });
@@ -91,12 +107,12 @@ exports.save = (transaction) => {
             Item: {
                 "id": transaction.id,
                 "sender_name": transaction.sender_name,
-                "sender_email":transaction.sender_email,
-                "receiver_name":transaction.receiver_name,
-                "receiver_email":transaction.receiver_email,
-                "product_name":transaction.product_name,
-                "product_points":transaction.product_points,
-                "gift_type":transaction.gift_type,
+                "sender_email": transaction.sender_email,
+                "receiver_name": transaction.receiver_name,
+                "receiver_email": transaction.receiver_email,
+                "product_name": transaction.product_name,
+                "product_points": transaction.product_points,
+                "gift_type": transaction.gift_type,
                 "createdAt": transaction.createdAt,
                 "updatedAt": transaction.updatedAt
             }

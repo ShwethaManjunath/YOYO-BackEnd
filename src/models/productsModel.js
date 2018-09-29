@@ -47,7 +47,6 @@ exports.getProducts = () => {
         const params = {
             TableName: TABLE
         }
-
         docClient.scan(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
@@ -57,7 +56,6 @@ exports.getProducts = () => {
                 data.Items.forEach(function (item) {
                     console.log(" -", item);
                 });
-
                 resolve(data.Items);
             }
         });
@@ -182,7 +180,7 @@ exports.filterByPrice = (lowerLimit, upperLimit) => {
               "#p": "points"
           },
           ExpressionAttributeValues: {
-            ":t1": +lowerLimit, 
+            ":t1": +lowerLimit,
             ":t2": +upperLimit
           }
         };
@@ -199,7 +197,7 @@ exports.filterByPrice = (lowerLimit, upperLimit) => {
 }
 
 exports.update = (product) => {
-    console.log('product',product);
+    console.log('product', product);
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
@@ -210,7 +208,7 @@ exports.update = (product) => {
             UpdateExpression: "set  title = :title , retailer_id = :retailer_id, points= :points , description = :description , avgRating= :avgRating , thumbnail= :thumbnail , image = :image ",
             ConditionExpression: "id = :id",
             ExpressionAttributeValues: {
-                ":id":product.id,
+                ":id": product.id,
                 ":title": product.title,
                 ":retailer_id": product.retailer_id,
                 ":points": product.points,
@@ -235,7 +233,7 @@ exports.update = (product) => {
     });
 }
 
-exports.deleteItem = (categoryId, id) => {
+exports.deleteItem = (id, categoryId) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
@@ -300,33 +298,61 @@ exports.getSortedProducts = (details) => {
     })
 }
 
+exports.getRecommendedProducts = (productData) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE,
+            KeyConditionExpression: "categoryId = :categoryId",
+            filterExpression: "avgRating >= :num",
+            ExpressionAttributeValues: {
+                ":num": 4,
+                ":categoryId": productData.categoryId
+            },
+            Limit: 4
+        }
+
+        docClient.scan(params, function (err, data) {
+            if (err) {
+                console.log('Recommended products data not coming');
+                reject(err);
+            }
+            else {
+                console.log("Getting recommended products", data);
+                resolve(data);
+
+
+            }
+        });
+    });
+}
+
 exports.filterProducts = (categories, minPrce, maxPrice) => {
     return new Promise((resolve, reject) => {
         const categpryQuery = categories.map(c => {
-            return '#cId= :c'+c
+            return '#cId= :c' + c
         }).join(' OR ')
         console.log(categpryQuery);
-        
-        const finalQuery = categpryQuery.length?
-        '(' + categpryQuery + ')' + ' AND ' + '#p BETWEEN :t1 AND :t2'
-        :
-        '#p BETWEEN :t1 AND :t2';
-        
+
+        const finalQuery = categpryQuery.length ?
+            '(' + categpryQuery + ')' + ' AND ' + '#p BETWEEN :t1 AND :t2'
+            :
+            '#p BETWEEN :t1 AND :t2';
+
         const exAtValuesCategories = {};
         categories.forEach(c => {
             exAtValuesCategories[':c' + c] = c
         })
-        
+
         console.log(exAtValuesCategories);
-        
+
         const exAtNamesCategories = {}
-        if(Object.values(exAtValuesCategories).length) {
+        if (Object.values(exAtValuesCategories).length) {
             exAtNamesCategories['#cId'] = 'categoryId'
         }
-        
+
         console.log(exAtNamesCategories);
-        
-        
+
+
         const params = {
             TableName: TABLE,
             FilterExpression: finalQuery,
@@ -336,11 +362,11 @@ exports.filterProducts = (categories, minPrce, maxPrice) => {
             },
             ExpressionAttributeValues: {
                 ...exAtValuesCategories,
-                ":t1": +minPrce, 
+                ":t1": +minPrce,
                 ":t2": +maxPrice
             }
         }
-        
+
 
         docClient.scan(params, function (err, data) {
             if (err) {

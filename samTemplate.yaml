@@ -375,6 +375,33 @@ Resources:
           Properties:
             Path: /comments
             Method: POST
+  CognitoLoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/users/congnitoLogin.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetProductByIdApi:
+          Type: Api
+          Properties:
+            Path: /cognitoLogin
+            Method: POST
+
+  GetReceivedGiftsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/transaction/getReceivedGifts.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetTransactionsApi:
+          Type: Api
+          Properties:
+            Path: /receivedGifts
+            Method: GET
 
   HelloFunctionGR:
       Type: AWS::Serverless::Function
@@ -460,8 +487,6 @@ Resources:
               providerARNs:
                 - arn:aws:cognito-idp:us-east-1:599408351101:userpool/us-east-1_cvNEqFSZn
               type: "cognito_user_pools"
- 
-
 
   GiftAppApiDeployment:
     Type: AWS::ApiGateway::Deployment

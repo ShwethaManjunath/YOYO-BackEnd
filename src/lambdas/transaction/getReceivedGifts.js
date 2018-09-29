@@ -5,8 +5,8 @@ exports.handler = (event, context, callback) => {
         TableName : "Transactions",
     };
     if(event.queryStringParameters) {
-        const email = event.queryStringParameters.sender_email;
-        TransactionModel.getTransactionHistory(email)
+        const email = event.queryStringParameters.receiver_email;
+        TransactionModel.getReceivedGifts(email)
          .then (transactions => {
             var response = {
                 "statusCode": 200,
