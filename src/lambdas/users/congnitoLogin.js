@@ -42,9 +42,7 @@ exports.handler =  (event, context, callback) => {
                         'Access-Control-Allow-Origin': '*',
                         'Access-Control-Allow-Credentials': true,
                     },
-                    "body": JSON.stringify({
-                        "message": 'Successfully loggedin.'
-                    }),
+                    "body": JSON.stringify(userData),
                     "isBase64Encoded": false
                 };
                 callback(null, response);
