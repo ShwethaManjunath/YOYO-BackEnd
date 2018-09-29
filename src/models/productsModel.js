@@ -308,7 +308,7 @@ exports.filterProducts = (categories, minPrce, maxPrice) => {
         console.log(categpryQuery);
         
         const finalQuery = categpryQuery.length?
-        categpryQuery + ' AND ' + '#p BETWEEN :t1 AND :t2'
+        '(' + categpryQuery + ')' + ' AND ' + '#p BETWEEN :t1 AND :t2'
         :
         '#p BETWEEN :t1 AND :t2';
         
