@@ -50,7 +50,8 @@ exports.postComment = (comment) => {
                 userId: comment.userId,
                 productId: comment.productId,
                 rating: comment.rating,
-                commentId: comment.commentId
+                commentId: comment.commentId,
+                timeStamp: comment.timeStamp
             }
         }
 
