@@ -1,5 +1,5 @@
 
-const model = require('../models/productsModel');
+const model = require('../models/transactionModel');
 
     Promise.all([
         // Movie.createTable({})

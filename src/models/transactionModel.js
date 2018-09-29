@@ -90,14 +90,13 @@ exports.save = (transaction) => {
             TableName: TABLE,
             Item: {
                 "id": transaction.id,
-                "product_id":transaction.product_id,
-                "sender_id":transaction.sender_id,
-                "gift_type":transaction.gift_type,
-                "points_used":transaction.requiredPoints,
+                "sender_name": transaction.sender_name,
+                "sender_email":transaction.sender_email,
                 "receiver_name":transaction.receiver_name,
-                "receiver_address":transaction.receiver_address,
                 "receiver_email":transaction.receiver_email,
-                "receiver_contact":transaction.receiver_contact,
+                "product_name":transaction.product_name,
+                "product_points":transaction.product_points,
+                "gift_type":transaction.gift_type,
                 "createdAt": transaction.createdAt,
                 "updatedAt": transaction.updatedAt
             }
