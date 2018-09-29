@@ -2,9 +2,19 @@ const productModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
 
-    const qParams = event.queryStringParameters;
+    const qParams = event.queryStringParameters || {};
+    console.log('Query Params: ', qParams);
+    const categories = [];
+    let i = 0;
+    while(qParams[i+'']) {
+        categories.push(qParams[i+''])
+        i++;
+    }
+    console.log('Categories: ', categories);
+    const minPrce = qParams.lowerPrice? qParams.lowerPrice : 0;
+    const maxPrice = qParams.upperPrice? qParams.upperPrice : 9999999;
 
-    productModel.filterProducts()
+    productModel.filterProducts(categories, +minPrce, +maxPrice)
     .then(products => {
         var response = {
             "statusCode": 200,

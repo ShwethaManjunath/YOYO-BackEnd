@@ -300,13 +300,45 @@ exports.getSortedProducts = (details) => {
     })
 }
 
-exports.filterProducts = query => {
+exports.filterProducts = (categories, minPrce, maxPrice) => {
     return new Promise((resolve, reject) => {
+        const categpryQuery = categories.map(c => {
+            return '#cId= :c'+c
+        }).join(' OR ')
+        console.log(categpryQuery);
         
-        const dynamodb = new AWS.DynamoDB();
-
+        const finalQuery = categpryQuery.length?
+        categpryQuery + ' AND ' + '#p BETWEEN :t1 AND :t2'
+        :
+        '#p BETWEEN :t1 AND :t2';
+        
+        const exAtValuesCategories = {};
+        categories.forEach(c => {
+            exAtValuesCategories[':c' + c] = c
+        })
+        
+        console.log(exAtValuesCategories);
+        
+        const exAtNamesCategories = {}
+        if(Object.values(exAtValuesCategories).length) {
+            exAtNamesCategories['#cId'] = 'categoryId'
+        }
+        
+        console.log(exAtNamesCategories);
+        
+        
         const params = {
-            TableName: TABLE
+            TableName: TABLE,
+            FilterExpression: finalQuery,
+            ExpressionAttributeNames: {
+                ...exAtNamesCategories,
+                "#p": "points"
+            },
+            ExpressionAttributeValues: {
+                ...exAtValuesCategories,
+                ":t1": minPrce, 
+                ":t2": maxPrice
+            }
         }
         
 
