@@ -26,6 +26,20 @@ Globals:
     EndpointConfiguration: REGIONAL
 
 Resources:
+  # HelloFunctionGR:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: hello.handler
+  #     Runtime: nodejs6.10
+  #     CodeUri: ./
+  #     Policies: AmazonDynamoDBFullAccess
+  #     Events:
+  #       HelloTimeApiGR:
+  #         Type: Api
+  #         Properties:
+  #           Path: /HelloResourceGR
+  #           Method: GET
+
   HelloFunctionGR:
     Type: AWS::Serverless::Function
     Properties:
@@ -347,7 +361,7 @@ Resources:
           Type: Api
           Properties:
             Path: /products/filter
-            Method: GET
+            Method: GET      
 
   FetchCommentsFunction:
     Type: AWS::Serverless::Function
@@ -362,3 +376,105 @@ Resources:
           Properties:
             Path: /comments
             Method: GET
+
+  HelloFunctionGR:
+      Type: AWS::Serverless::Function
+      Properties:
+        Handler: hello.handler
+        Runtime: nodejs6.10
+        CodeUri: ./
+        Policies: AmazonDynamoDBFullAccess
+
+  HelloFunctionGRPermissions:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref HelloFunctionGR
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:aws:execute-api:"
+            - !Ref AWS::Region
+            - ":"
+            - !Ref AWS::AccountId
+            - ":"
+            - !Ref YoYoGiftApi
+            - "/*"
+ 
+
+  YoYoGiftApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: GiftApp
+      Body:
+        swagger: 2.0
+        info:
+          version: 1.0.0
+          title: YoYoGiftApp
+        paths:
+          /HelloResourceGR:
+            get:
+              description: hello world
+              consumes:
+                - application/json
+              produces:
+                - application/json
+
+              responses:
+                "200":
+                  description: "200 response"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+
+              security:
+                - CognitoAuthorizer: []
+                
+
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: 200
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                uri: 
+                  Fn::Join:
+                    - ""
+                    - - "arn:aws:apigateway:"
+                      - !Ref AWS::Region
+                      - ":lambda:path/2015-03-31/functions/"
+                      - !GetAtt HelloFunctionGR.Arn
+                      - "/invocations"
+                passthroughBehavior: "when_no_match"
+                httpMethod: "GET"
+                contentHandling: "CONVERT_TO_TEXT"
+                type: "aws_proxy"
+
+        securityDefinitions:
+          CognitoAuthorizer:
+            type: "apiKey"
+            name: Authorization
+            in: header
+            x-amazon-apigateway-authtype: cognito_user_pools
+            x-amazon-apigateway-authorizer:
+              providerARNs:
+                - arn:aws:cognito-idp:us-east-1:599408351101:userpool/us-east-1_cvNEqFSZn
+              type: "cognito_user_pools"
+ 
+
+
+  GiftAppApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      Description: Prod deployment for Gift APP API
+      RestApiId: !Ref YoYoGiftApi
+      StageName: prod         
+
+
+  GiftAppApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      Description: Staging deployment for Gift APP API
+      RestApiId: !Ref YoYoGiftApi
+      StageName: stag
