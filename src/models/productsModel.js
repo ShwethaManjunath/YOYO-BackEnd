@@ -47,7 +47,6 @@ exports.getProducts = () => {
         const params = {
             TableName: TABLE
         }
-
         docClient.scan(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
@@ -57,7 +56,6 @@ exports.getProducts = () => {
                 data.Items.forEach(function (item) {
                     console.log(" -", item);
                 });
-
                 resolve(data.Items);
             }
         });
@@ -176,38 +174,38 @@ exports.save = (product) => {
 exports.filterByPrice = (lowerLimit, upperLimit) => {
     return new Promise((resolve, reject) => {
         var params = {
-          TableName: TABLE,
-          KeyConditionExpression: "points = BETWEEN :t1 AND :t2",
-          ExpressionAttributeValues: {
-            ":t1": {"S": lowerLimit}, 
-            ":t2": {"S": upperLimit}
-          }
+            TableName: TABLE,
+            KeyConditionExpression: "points = BETWEEN :t1 AND :t2",
+            ExpressionAttributeValues: {
+                ":t1": { "S": lowerLimit },
+                ":t2": { "S": upperLimit }
+            }
         };
         docClient.query(params, function (err, data) {
-          if (err) {
-            console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-            reject(err)
-          } else {
-            console.log("Query succeeded.", data.Item);
-            resolve(data.Item);
-          }
+            if (err) {
+                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                reject(err)
+            } else {
+                console.log("Query succeeded.", data.Item);
+                resolve(data.Item);
+            }
         });
-      })
+    })
 }
 
 exports.update = (product) => {
-    console.log('product',product);
+    console.log('product', product);
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
             Key: {
                 "categoryId": product.categoryId,
-                "id":product.id
+                "id": product.id
             },
             UpdateExpression: "set  title = :title , retailer_id = :retailer_id, points= :points , description = :description , avgRating= :avgRating , thumbnail= :thumbnail , image = :image ",
             ConditionExpression: "id = :id",
             ExpressionAttributeValues: {
-                ":id":product.id,
+                ":id": product.id,
                 ":title": product.title,
                 ":retailer_id": product.retailer_id,
                 ":points": product.points,
@@ -232,7 +230,7 @@ exports.update = (product) => {
     });
 }
 
-exports.deleteItem = (categoryId, id) => {
+exports.deleteItem = (id, categoryId) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
@@ -297,3 +295,28 @@ exports.getSortedProducts = (details) => {
     })
 }
 
+exports.getRecommendedProducts = (productData) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            TableName: TABLE,
+            KeyConditionExpression: "categoryId = :categoryId",
+            filterExpression: "avgRating >= :num",
+            ExpressionAttributeValues: {
+                ":num": 4,
+                ":categoryId": productData.categoryId
+            },
+            Limit: 4
+        }
+
+        docClient.scan(params, function (err, data) {
+            if(err) {
+                console.log('Recommended products data not coming');
+                reject(err);
+            }
+            else {
+                console.log("Getting recommended products",data);
+                resolve(data);
+            }
+        });
+    });
+}
