@@ -113,24 +113,23 @@ exports.getProductByCategory = (categoryId) => {
     });
 }
 
-exports.getCategoryProductByPrice = (paramData) => {
+exports.getProductsByPriceCategory = (categoryId, lowerPrice, upperPrice) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            KeySchema: [
-                { AttributeName: "categoryId", KeyType: "HASH" },  //Partition key
-                { AttributeName: "id", KeyType: "RANGE" }  //Sort key
-            ],
-            KeyConditionExpression: "categoryId = :cId AND lowerPrice <= :lprice AND upperPrice = :uprice",
+            FilterExpression: "categoryId = :cId AND #p BETWEEN :t1 AND :t2",
+            ExpressionAttributeNames: {
+                "#p": "points"
+            },
             ExpressionAttributeValues: {
-                ":cId": paramData.categoryId,
-                ":lprice": paramData.lowerPrice,
-                ":uprice": paramData.upperPrice
+                ":cId": categoryId,
+                ":t1": +lowerPrice,
+                ":t2": +upperPrice
             }
 
         }
 
-        docClient.query(params, function (err, data) {
+        docClient.scan(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
                 reject(err)
@@ -196,7 +195,7 @@ exports.filterByPrice = (lowerLimit, upperLimit) => {
             resolve(data.Items);
           }
         });
-      })
+    })
 }
 
 exports.update = (product) => {
@@ -206,7 +205,7 @@ exports.update = (product) => {
             TableName: TABLE,
             Key: {
                 "categoryId": product.categoryId,
-                "id":product.id
+                "id": product.id
             },
             UpdateExpression: "set  title = :title , retailer_id = :retailer_id, points= :points , description = :description , avgRating= :avgRating , thumbnail= :thumbnail , image = :image ",
             ConditionExpression: "id = :id",
@@ -301,3 +300,56 @@ exports.getSortedProducts = (details) => {
     })
 }
 
+exports.filterProducts = (categories, minPrce, maxPrice) => {
+    return new Promise((resolve, reject) => {
+        const categpryQuery = categories.map(c => {
+            return '#cId= :c'+c
+        }).join(' OR ')
+        console.log(categpryQuery);
+        
+        const finalQuery = categpryQuery.length?
+        '(' + categpryQuery + ')' + ' AND ' + '#p BETWEEN :t1 AND :t2'
+        :
+        '#p BETWEEN :t1 AND :t2';
+        
+        const exAtValuesCategories = {};
+        categories.forEach(c => {
+            exAtValuesCategories[':c' + c] = c
+        })
+        
+        console.log(exAtValuesCategories);
+        
+        const exAtNamesCategories = {}
+        if(Object.values(exAtValuesCategories).length) {
+            exAtNamesCategories['#cId'] = 'categoryId'
+        }
+        
+        console.log(exAtNamesCategories);
+        
+        
+        const params = {
+            TableName: TABLE,
+            FilterExpression: finalQuery,
+            ExpressionAttributeNames: {
+                ...exAtNamesCategories,
+                "#p": "points"
+            },
+            ExpressionAttributeValues: {
+                ...exAtValuesCategories,
+                ":t1": +minPrce, 
+                ":t2": +maxPrice
+            }
+        }
+        
+
+        docClient.scan(params, function (err, data) {
+            if (err) {
+                console.error("Error occured:", JSON.stringify(err, null, 2));
+                reject(err);
+            } else {
+                console.log("Scanned Data:", JSON.stringify(data, null, 2));
+                resolve(data.Items);
+            }
+        });
+    });
+}
