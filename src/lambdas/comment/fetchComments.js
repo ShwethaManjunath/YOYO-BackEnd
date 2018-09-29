@@ -1,19 +1,23 @@
-const productsModel = require('../../models/productsModel');
+const commentModel = require('../../models/commentModel');
 
 exports.handler = (event, context, callback) => {
-    const lowerLimit = event.queryStringParameters.lowerLimit;
-    const upperLimit = event.queryStringParameters.upperLimit;
-    console.log("ll", lowerLimit);
-    console.log("ul", upperLimit);
-        productsModel.filterByPrice(lowerLimit, upperLimit)
-        .then(products => {
+ 
+    var productId = event.queryStringParameters.productId;
+    
+    var commentId ='id' + (new Date()).getTime();
+
+    commentModel.fetchComments(productId, commentId)
+        .then((comments) => {
             var response = {
                 "statusCode": 200,
                 "headers": {
+                    "content-type": "application/json",
                     'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials': true,
                 },
-                "body": JSON.stringify(products),
+                "body": JSON.stringify({
+                    "success": true,
+                    comments
+                }),
                 "isBase64Encoded": false
             };
             callback(null, response);
@@ -22,6 +26,7 @@ exports.handler = (event, context, callback) => {
             var response = {
                 "statusCode": 500,
                 "headers": {
+                    "content-type": "application/json",
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Credentials': true,
                 },
@@ -29,5 +34,6 @@ exports.handler = (event, context, callback) => {
                 "isBase64Encoded": false
             };
             callback(null, response);
-        });
-    }
+        })
+
+}

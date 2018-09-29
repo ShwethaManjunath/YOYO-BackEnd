@@ -1,17 +1,28 @@
-const productsModel = require('../../models/productsModel');
+const productModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
-    const lowerPrice = event.queryStringParameters.lowerPrice;
-    const upperPrice = event.queryStringParameters.upperPrice;
-    const categoryId = event.queryStringParameters.categoryId;
-    
-    productsModel.getProductsByPriceCategory(categoryId, lowerPrice, upperPrice)
+
+    const qParams = event.queryStringParameters || {};
+    console.log('Query Params: ', qParams);
+    const categories = [];
+    let i = 0;
+    while(qParams[i+'']) {
+        categories.push(qParams[i+''])
+        i++;
+    }
+    console.log('Categories: ', categories);
+    const minPrce = qParams.lowerPrice? qParams.lowerPrice : 0;
+    const maxPrice = qParams.upperPrice? qParams.upperPrice : 9999999;
+
+    productModel.filterProducts(categories, +minPrce, +maxPrice)
     .then(products => {
         var response = {
             "statusCode": 200,
             "headers": {
+                "content-type": "application/json",
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': true,
+
             },
             "body": JSON.stringify(products),
             "isBase64Encoded": false
@@ -22,6 +33,7 @@ exports.handler = (event, context, callback) => {
         var response = {
             "statusCode": 500,
             "headers": {
+                "content-type": "application/json",
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': true,
             },
@@ -29,6 +41,5 @@ exports.handler = (event, context, callback) => {
             "isBase64Encoded": false
         };
         callback(null, response);
-    });
-
+    })
 }

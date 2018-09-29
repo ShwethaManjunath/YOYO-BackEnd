@@ -111,24 +111,23 @@ exports.getProductByCategory = (categoryId) => {
     });
 }
 
-exports.getCategoryProductByPrice = (paramData) => {
+exports.getProductsByPriceCategory = (categoryId, lowerPrice, upperPrice) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            KeySchema: [
-                { AttributeName: "categoryId", KeyType: "HASH" },  //Partition key
-                { AttributeName: "id", KeyType: "RANGE" }  //Sort key
-            ],
-            KeyConditionExpression: "categoryId = :cId AND lowerPrice <= :lprice AND upperPrice = :uprice",
+            FilterExpression: "categoryId = :cId AND #p BETWEEN :t1 AND :t2",
+            ExpressionAttributeNames: {
+                "#p": "points"
+            },
             ExpressionAttributeValues: {
-                ":cId": paramData.categoryId,
-                ":lprice": paramData.lowerPrice,
-                ":uprice": paramData.upperPrice
+                ":cId": categoryId,
+                ":t1": +lowerPrice,
+                ":t2": +upperPrice
             }
 
         }
 
-        docClient.query(params, function (err, data) {
+        docClient.scan(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
                 reject(err)
@@ -174,21 +173,25 @@ exports.save = (product) => {
 exports.filterByPrice = (lowerLimit, upperLimit) => {
     return new Promise((resolve, reject) => {
         var params = {
-            TableName: TABLE,
-            KeyConditionExpression: "points = BETWEEN :t1 AND :t2",
-            ExpressionAttributeValues: {
-                ":t1": { "S": lowerLimit },
-                ":t2": { "S": upperLimit }
-            }
+          TableName: TABLE,
+         // KeyConditionExpression: "categoryId= :categoryId AND id> :id" ,
+          FilterExpression: "#p BETWEEN :t1 AND :t2",
+          ExpressionAttributeNames: {
+              "#p": "points"
+          },
+          ExpressionAttributeValues: {
+            ":t1": +lowerLimit,
+            ":t2": +upperLimit
+          }
         };
-        docClient.query(params, function (err, data) {
-            if (err) {
-                console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-                reject(err)
-            } else {
-                console.log("Query succeeded.", data.Item);
-                resolve(data.Item);
-            }
+        docClient.scan(params, function (err, data) {
+          if (err) {
+            console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+            reject(err)
+          } else {
+            console.log("Query succeeded.", data);
+            resolve(data.Items);
+          }
         });
     })
 }
@@ -309,13 +312,69 @@ exports.getRecommendedProducts = (productData) => {
         }
 
         docClient.scan(params, function (err, data) {
-            if(err) {
+            if (err) {
                 console.log('Recommended products data not coming');
                 reject(err);
             }
             else {
-                console.log("Getting recommended products",data);
+                console.log("Getting recommended products", data);
                 resolve(data);
+
+
+            }
+        });
+    });
+}
+
+exports.filterProducts = (categories, minPrce, maxPrice) => {
+    return new Promise((resolve, reject) => {
+        const categpryQuery = categories.map(c => {
+            return '#cId= :c' + c
+        }).join(' OR ')
+        console.log(categpryQuery);
+
+        const finalQuery = categpryQuery.length ?
+            '(' + categpryQuery + ')' + ' AND ' + '#p BETWEEN :t1 AND :t2'
+            :
+            '#p BETWEEN :t1 AND :t2';
+
+        const exAtValuesCategories = {};
+        categories.forEach(c => {
+            exAtValuesCategories[':c' + c] = c
+        })
+
+        console.log(exAtValuesCategories);
+
+        const exAtNamesCategories = {}
+        if (Object.values(exAtValuesCategories).length) {
+            exAtNamesCategories['#cId'] = 'categoryId'
+        }
+
+        console.log(exAtNamesCategories);
+
+
+        const params = {
+            TableName: TABLE,
+            FilterExpression: finalQuery,
+            ExpressionAttributeNames: {
+                ...exAtNamesCategories,
+                "#p": "points"
+            },
+            ExpressionAttributeValues: {
+                ...exAtValuesCategories,
+                ":t1": +minPrce,
+                ":t2": +maxPrice
+            }
+        }
+
+
+        docClient.scan(params, function (err, data) {
+            if (err) {
+                console.error("Error occured:", JSON.stringify(err, null, 2));
+                reject(err);
+            } else {
+                console.log("Scanned Data:", JSON.stringify(data, null, 2));
+                resolve(data.Items);
             }
         });
     });
