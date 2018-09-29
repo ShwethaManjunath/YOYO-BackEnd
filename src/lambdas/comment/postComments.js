@@ -1,12 +1,18 @@
 const commentModel = require('../../models/commentModel');
 
 exports.handler = (event, context, callback) => {
- 
-    var productId = event.queryStringParameters.productId;
-    
-    var commentId ='id' + (new Date()).getTime();
 
-    commentModel.fetchComments(productId, commentId)
+    var eventBody = JSON.parse(event.body);
+
+    const commentData = {
+        commentText: eventBody.commentText,
+        userId: eventBody.userId,
+        productId: eventBody.productId,
+        rating: eventBody.rating,
+        commentId:'id' + (new Date()).getTime()
+    }
+
+    commentModel.postComment(commentData)
         .then((comments) => {
             var response = {
                 "statusCode": 200,
@@ -14,10 +20,7 @@ exports.handler = (event, context, callback) => {
                     "content-type": "application/json",
                     'Access-Control-Allow-Origin': '*',
                 },
-                "body": JSON.stringify({
-                    "success": true,
-                    comments
-                }),
+                "body": JSON.stringify(comments),
                 "isBase64Encoded": false
             };
             callback(null, response);

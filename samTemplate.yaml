@@ -360,6 +360,20 @@ Resources:
           Type: Api
           Properties:
             Path: /comments
+            Method: GET
+
+  PostCommentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/comment/postComments.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetProductByIdApi:
+          Type: Api
+          Properties:
+            Path: /comments
             Method: POST
   CognitoLoginFunction:
     Type: AWS::Serverless::Function
@@ -375,10 +389,23 @@ Resources:
             Path: /cognitoLogin
             Method: POST
 
-  # 
+  GetReceivedGiftsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/transaction/getReceivedGifts.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetTransactionsApi:
+          Type: Api
+          Properties:
+            Path: /receivedGifts
+            Method: GET
+
   HelloFunctionGR:
-        Type: AWS::Serverless::Function
-        Properties:
+      Type: AWS::Serverless::Function
+      Properties:
         Handler: hello.handler
         Runtime: nodejs6.10
         CodeUri: ./
@@ -475,4 +502,3 @@ Resources:
       Description: Staging deployment for Gift APP API
       RestApiId: !Ref YoYoGiftApi
       StageName: stag
-  # 
