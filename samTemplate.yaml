@@ -522,6 +522,19 @@ Resources:
           Properties:
             Path: /cache
             Method: GET
+  PostTransactionFunctionV1:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/transaction/postTransactionV1.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCacheApi:
+          Type: Api
+          Properties:
+            Path: /postTransactionV1
+            Method: POST
 
   ## Authorizer
   AuthorizerFunction:
@@ -534,5 +547,11 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: lambdas/authorizer/authorizerTransactionHistory.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+  AuthorizerCommentsGET:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/authorizer/authorizerPostComments.handler
       Runtime: nodejs8.10
       CodeUri: ./src
