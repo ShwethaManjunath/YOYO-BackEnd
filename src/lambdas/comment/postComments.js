@@ -9,7 +9,8 @@ exports.handler = (event, context, callback) => {
         userId: eventBody.userId,
         productId: eventBody.productId,
         rating: eventBody.rating,
-        commentId:'id' + (new Date()).getTime()
+        commentId:'id' + (new Date()).getTime(),
+        timeStamp: eventBody.timeStamp
     }
 
     commentModel.postComment(commentData)
