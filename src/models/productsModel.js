@@ -302,7 +302,7 @@ exports.getRecommendedProducts = (productData) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            filterExpression: "avgRating >= :num",
+            FilterExpression: "avgRating >= :num",
             ExpressionAttributeValues: {
                 ":num": 4,
             },
