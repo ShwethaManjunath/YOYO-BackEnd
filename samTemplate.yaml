@@ -403,6 +403,11 @@ Resources:
             Path: /receivedGifts
             Method: GET
 
+
+
+
+##########################################            # 
+
   HelloFunctionGR:
       Type: AWS::Serverless::Function
       Properties:
@@ -502,6 +507,7 @@ Resources:
       Description: Staging deployment for Gift APP API
       RestApiId: !Ref YoYoGiftApi
       StageName: stag
+# ######################################
 
   GetCacheFunction:
     Type: AWS::Serverless::Function
@@ -516,3 +522,11 @@ Resources:
           Properties:
             Path: /cache
             Method: GET
+
+  ## Authorizer
+  GetCacheFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/authorizer/authorizer1.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
