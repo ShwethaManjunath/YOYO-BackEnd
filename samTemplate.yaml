@@ -530,3 +530,9 @@ Resources:
       Handler: lambdas/authorizer/authorizer1.handler
       Runtime: nodejs8.10
       CodeUri: ./src
+  AuthorizerTransactionHistoryGET:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/authorizer/authorizerTransactionHistory.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src

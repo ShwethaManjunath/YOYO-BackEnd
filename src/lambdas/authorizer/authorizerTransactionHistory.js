@@ -1,6 +1,33 @@
+const AWS = require("aws-sdk");
 
 exports.handler =  function(event, context, callback) {
     var token = event.authorizationToken;
+
+    const eventBody = JSON.parse(event.body);
+    var params = {
+        AccessToken: eventBody.accessToken
+    };
+
+    var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
+    cognitoidentityserviceprovider.getUser(params, function(err, data) {
+    if (err) {
+        callback(null, generatePolicy('user', 'Deny', event.methodArn));
+    }
+    else {
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     switch (token.toLowerCase()) {
         case 'allow':
             callback(null, generatePolicy('user', 'Allow', event.methodArn));
