@@ -1,8 +1,6 @@
 const AWS = require("aws-sdk");
 
-let isAllowed = (token, senderEmail) => {
-    console.log("token", token);
-    console.log("senderEmail",senderEmail);
+let isAllowed = (token, email) => {
     return new Promise((resolve, reject) => {
         var params = {
             AccessToken: token
@@ -16,7 +14,7 @@ let isAllowed = (token, senderEmail) => {
             else {
                 console.log('userData',data);
                 const userData = parseUserData(data);
-                if(userData.email === senderEmail) {
+                if(userData.email === email) {
                     resolve(true);
                 } else {
                     resolve(false)
@@ -50,7 +48,8 @@ exports.handler = function(event, context, callback) {
     var condition = {};
     condition.IpAddress = {};
     const token = event.headers.Authorization;
-    isAllowed(token, event.queryStringParameters.sender_email)
+    const email = JSON.parse(event.body).email;
+    isAllowed(token, email)
     .then(allowed => {
         if(allowed){
             callback(null, generateAllow('me', event.methodArn));
