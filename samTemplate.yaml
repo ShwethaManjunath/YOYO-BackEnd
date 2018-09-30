@@ -524,7 +524,7 @@ Resources:
             Method: GET
 
   ## Authorizer
-  GetCacheFunction:
+  AuthorizerFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: lambdas/authorizer/authorizer1.handler
