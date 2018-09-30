@@ -166,19 +166,19 @@ Resources:
             Path: /removeproduct
             Method: DELETE
 
-  # GetProductByIdFunction:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Handler: lambdas/products/getProduct.handler
-  #     Runtime: nodejs8.10
-  #     CodeUri: ./src
-  #     Policies: AmazonDynamoDBFullAccess
-  #     Events:
-  #       GetProductByIdApi:
-  #         Type: Api
-  #         Properties:
-  #           Path: /products/{id}
-  #           Method: GET
+  GetRecommendedProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/products/recommendedProducts.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetAllProductsApi:
+          Type: Api
+          Properties:
+            Path: /recommendedproducts
+            Method: GET
 
   PostTransactionFunction:
     Type: AWS::Serverless::Function
@@ -403,6 +403,11 @@ Resources:
             Path: /receivedGifts
             Method: GET
 
+
+
+
+##########################################            # 
+
   HelloFunctionGR:
       Type: AWS::Serverless::Function
       Properties:
@@ -502,3 +507,32 @@ Resources:
       Description: Staging deployment for Gift APP API
       RestApiId: !Ref YoYoGiftApi
       StageName: stag
+# ######################################
+
+  GetCacheFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/cache/getCache.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetCacheApi:
+          Type: Api
+          Properties:
+            Path: /cache
+            Method: GET
+
+  ## Authorizer
+  AuthorizerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/authorizer/authorizer1.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src
+  AuthorizerTransactionHistoryGET:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/authorizer/authorizerTransactionHistory.handler
+      Runtime: nodejs8.10
+      CodeUri: ./src

@@ -302,11 +302,9 @@ exports.getRecommendedProducts = (productData) => {
     return new Promise((resolve, reject) => {
         const params = {
             TableName: TABLE,
-            KeyConditionExpression: "categoryId = :categoryId",
-            filterExpression: "avgRating >= :num",
+            FilterExpression: "avgRating >= :num",
             ExpressionAttributeValues: {
                 ":num": 4,
-                ":categoryId": productData.categoryId
             },
             Limit: 4
         }

@@ -1,8 +1,9 @@
 const productsModel = require('../../models/productsModel');
 
 exports.handler = (event, context, callback) => {
-    productsModel.getProducts()
+    productsModel.getRecommendedProducts()
         .then(products => {
+            console.log(products);
             var response = {
                 "statusCode": 200,
                 "headers": {
